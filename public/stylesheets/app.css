@@ -1,0 +1,49 @@
+i.icon {
+	font-size: 2em;
+}
+
+.main.container{
+	margin-top: 7em;
+}
+
+#delete {
+	display: inline;
+}
+
+#edit {
+	width: 6.7em;
+}
+
+.register {
+	margin-top: 10vh;
+}
+
+.register h1{
+	text-align: center;
+}
+
+#menu {
+	width: 100%;
+}
+
+.img-container > img {
+    width: 100%;
+    height: auto;
+    border-radius: 30%;
+}
+
+.regular{
+	color: rgba(128, 255, 128, 0.3);
+}
+
+i.good:hover{
+	color: rgba(128, 255, 128, 1.0);
+}
+
+i.bad:hover{
+	color: red;
+}
+
+.hidden{
+	display: none;
+}

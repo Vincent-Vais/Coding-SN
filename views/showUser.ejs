@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta name="viewport" content="initial-scale=1">
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
+    <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
+    <script id="bigMenu" type="text/x-handlebars-template">
+        <div class="ui grid">
+            <div class="four wide column">
+                <div class="ui vertical fluid tabular menu">
+                    <a class="item active">
+                        Bio
+                    </a>
+                    <a class="item">
+                        Links
+                    </a>
+                    <a class="item">
+                        Settings
+                    </a>
+                </div>
+            </div>
+            <div id = "parent" class="twelve wide stretched column">
+            </div>
+        </div>
+    </script>
+    <script id="bigBio" type="text/x-handlebars-template">
+        <div>
+            <form class="ui form">
+                <textarea style="width: 100%; height: 100%;
+                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif">Enter your bio here
+                </textarea>
+                <button style="position: relative; left : 90%; top : -40px; 
+                background-color : inherit; border : 0"><i class="ui check icon regular good"></i></button>
+            </form>
+        </div>
+    </script>
+    <script id="bigLinks" type="text/x-handlebars-template">
+        <div class="ui segment">
+            <form class="ui form">
+                <div class="field" style="width: 85%; display:inline-block;">
+                    <div style="width: 100%; display:inline-block;margin-right: 1vw;">
+                        <label>Social Media</label>
+                    <select class="ui fluid dropdown">
+                        <option value="instagram">Instagram</option>
+                        <option value="facebook">Facebook</option>
+                        <option value="twitter">Twitter</option>
+                        <option value="github">GitHub</option>
+                        <option value="linkedin">LinkedIn</option>
+                    </select>
+                    </div>
+                </div>
+                <div style="position: absolute; top: 3.5vh; left: 52.5vw;">
+                    <i class="ui plus circle icon good" style="font-size: 3rem;"></i>
+                </div>
+                <div id="anchor"></div>
+                <div id="form-button" class="hidden" style="margin-top: 3vh;">
+                    <button class="ui button" type="submit">Submit</button>
+                </div>
+            </form>
+        </div>
+    </script>
+    <script id="bigSettings" type="text/x-handlebars-template"></script>
+    <script id="smallMenu" type="text/x-handlebars-template">
+        <div class="ui tabular menu">
+            <a class="item active">
+                MyPicture
+            </a>
+            <a class="item">
+                Bio
+            </a>
+            <a class="item">
+                Links
+            </a>
+            <a class="item">
+                Settings
+            </a>
+          </div>
+    </script>
+    <p id="name"><%= user.name%></p>
+	<title></title>
+</head>
+<body>
+    <!-- FIX MENU FOR MOBILE!!!! -->
+	<div class="ui fixed inverted menu">
+		<div class="ui container">
+			<div id="menu" class="ui secondary menu">
+					<div class="header item">
+						<a href="/"><i class="code icon"></i></a>
+					</div>
+					<a href="/" class="active item">Blog</a>
+					<% if(user){ %>
+					<a href="/mypage/<%= user._id %>" class="item"><%= user.name %></a>
+					<a href="/blogs/new" class="item">New Post</a>
+					<% } %>
+				<div class="right menu ">
+					  <% if(user){ %>
+					  <div class="item">
+						<a href="/logout" class="ui negative button">Log-out</a>
+					  </div>
+					  <% }else{ %>
+						<div class="item">
+							<a href="/login" class="ui violet button">Log-in</a>
+						  </div>
+						<div class="item">
+							<a href="/register" class="ui primary button">Sign up</a>
+						</div>
+					  <% } %>
+				</div>
+			</div>
+		</div>
+	</div>
+    <div class="ui main text container">
+            <div class="ui stackable grid" style="padding:0; margin: 0;">
+                <div class="six wide column img-container">
+                    <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                </div>
+                <div class="ten wide column">
+                    <div class="ui grid">
+                        <div class="sixteen wide column" style="text-align: center">
+                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
+                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
+                                    <div class="four wide column" style="padding: 0;">
+                                        <div class="ui purple huge button show-button" style="
+                                        margin: 0;
+                                        padding: 0;
+                                        width: 100%;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        border-radius: 8px 0px 0px 8px;
+                                        height: 100%;">
+                                            <i class="align left icon" style="padding: 0;
+                                            margin: 0;
+                                            margin-top: 15px;
+                                            margin-left: 25px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="eight wide column" style="background-color: #a333c8;
+                                    margin: 0;
+                                    padding: 0;
+                                    border-radius: 0%;
+                                    color: white;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;">
+                                        <span style="font-size: 1.5em;">My Posts</span>
+                                    </div>
+                                    <div class="four wide column" style="padding: 0;
+                                    margin: 0;">
+                                        <div class="ui basic purple left pointing label" style="width: 100%;
+                                        height: 100%;
+                                        margin-left: 0;
+                                        border-radius: 0px 8px 8px 0px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;">
+                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sixteen wide column" style="text-align: center">
+                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
+                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
+                                    <div class="four wide column" style="padding: 0;">
+                                        <div class="ui red huge button show-button" style="
+                                        margin: 0;
+                                        padding: 0;
+                                        width: 100%;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        border-radius: 8px 0px 0px 8px;
+                                        height: 100%;">
+                                            <i class="heart icon" style="padding: 0;
+                                            margin: 0;
+                                            margin-top: 15px;
+                                            margin-left: 25px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="eight wide column" style="background-color: #db2828;
+                                    margin: 0;
+                                    padding: 0;
+                                    border-radius: 0%;
+                                    color: white;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;">
+                                        <span style="font-size: 1.5em;">Bloggers</span>
+                                    </div>
+                                    <div class="four wide column" style="padding: 0;
+                                    margin: 0;">
+                                        <div class="ui basic red left pointing label" style="width: 100%;
+                                        height: 100%;
+                                        margin-left: 0;
+                                        border-radius: 0px 8px 8px 0px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;">
+                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sixteen wide column" style="text-align: center">
+                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
+                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
+                                    <div class="four wide column" style="padding: 0;">
+                                        <div class="ui yellow huge button show-button" style="
+                                        margin: 0;
+                                        padding: 0;
+                                        width: 100%;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        border-radius: 8px 0px 0px 8px;
+                                        height: 100%;">
+                                            <i class="user icon" style="padding: 0;
+                                            margin: 0;
+                                            margin-top: 15px;
+                                            margin-left: 25px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="eight wide column" style="background-color: #fbbd08;
+                                    margin: 0;
+                                    padding: 0;
+                                    border-radius: 0%;
+                                    color: white;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;">
+                                        <span style="font-size: 1.5em;">Followers</span>
+                                    </div>
+                                    <div class="four wide column" style="padding: 0;
+                                    margin: 0;">
+                                        <div class="ui basic yellow left pointing label" style="width: 100%;
+                                        height: 100%;
+                                        margin-left: 0;
+                                        border-radius: 0px 8px 8px 0px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;">
+                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="sixteen wide column" style="text-align: center">
+                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
+                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
+                                    <div class="four wide column" style="padding: 0;">
+                                        <div class="ui teal huge button show-button" style="
+                                        margin: 0;
+                                        padding: 0;
+                                        width: 100%;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;
+                                        border-radius: 8px 0px 0px 8px;
+                                        height: 100%;">
+                                            <i class="coffee icon" style="padding: 0;
+                                            margin: 0;
+                                            margin-top: 15px;
+                                            margin-left: 25px;"></i>
+                                        </div>
+                                    </div>
+                                    <div class="eight wide column" style="background-color: #00b5ad;
+                                    margin: 0;
+                                    padding: 0;
+                                    border-radius: 0%;
+                                    color: white;
+                                    display: flex;
+                                    justify-content: center;
+                                    align-items: center;">
+                                        <span style="font-size: 1.5em;">Events</span>
+                                    </div>
+                                    <div class="four wide column" style="padding: 0;
+                                    margin: 0;">
+                                        <div class="ui basic teal left pointing label" style="width: 100%;
+                                        height: 100%;
+                                        margin-left: 0;
+                                        border-radius: 0px 8px 8px 0px;
+                                        display: flex;
+                                        justify-content: center;
+                                        align-items: center;">
+                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+    </div>
+    <div id="dynamic-menu" style="width: 80%; margin: 5% auto;">
+    </div>
+<script type="module" src = "/js/showUser.js"></script>
+<%- include("partials/footer") %>
