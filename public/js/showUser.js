@@ -1,3 +1,4 @@
+// GLOBAL VARIABLES
 const widthOutput = window.innerWidth;
 const widthThreshold = 765;
 let currentSize = "big";
@@ -5,11 +6,40 @@ let currentTab = "Bio";
 let bigTabs = ["Bio", "Links", "Settings"];
 let smallTabs = ["MyPicture", "Bio", "Links", "Settings"];
 
+// USER DATA
 const data = {name: document.getElementById("name").innerText};
 
+// MAPPERS
+const info = {
+    big: {
+        Bio: createBigBio,
+        Links: createBigLinks,
+        Settings: createBigSettings
+    },
+    small: {
+        MyPicture: createSmallPicture,
+        Bio: "createBigBio",
+        Links: "createBigLinks",
+        Settings: "createBigSettings"
+    } 
+}
 
+const eventHandlers = {
+    big: {
+        Bio: "noHandlersNeeded",
+        Links: createBigLinksEventHandlers,
+        Settings: "noHandlersNeeded"
+    },
+    small: {
+        MyPicture: createMyPictureEventHandlers,
+        Bio: "noHandlersNeeded",
+        Links: "noHandlersNeeded",
+        Settings: "noHandlersNeeded"
+    } 
+}
+
+// GENERAL USE
 const image = document.querySelector(".img-container");
-
 
 const removeChildren = parent => {
     if(parent.children){ 
@@ -19,10 +49,89 @@ const removeChildren = parent => {
             child = parent.lastElementChild; 
         }
     }
-    console.log(parent.children);
 }
 
-const createBigBio = () => {
+// function changeSource() {
+//     const fileList = this.files; /* now you can work with the file list */
+// }
+
+// ############### CHANGING MENUS ###############
+// generating MENU depending on screen size
+async function changeMenus(currentSize) { 
+    if(widthOutput>widthThreshold){
+        const source = document.getElementById('bigMenu').innerHTML;
+        renderDynamicMenu(source);
+        return currentSize;
+    }else{
+        const source = document.getElementById('smallMenu').innerHTML;
+        renderDynamicMenu(source);
+        image.style.display = "none";
+        currentSize = "small";
+        return currentSize;
+    }
+};
+
+function renderDynamicMenu(source){
+    const template = Handlebars.compile(source);
+
+    const compiledHtml = template();
+
+    const fill = document.getElementById('dynamic-menu');
+
+    fill.innerHTML = compiledHtml;
+}
+
+// DIFFERENT ELEMENTS FOR DIFERENT SIZES
+changeMenus(currentSize).then(currentSize => {
+    if(currentSize === "big"){
+        let elems = getBigDOMElements();
+        let currentElement = elems.bio;
+        let currentElementText = currentElement.text.trim();
+        info[currentSize][currentElementText](); // showing current active tab
+        eventHandlers[currentSize][currentElementText]();
+        for (const e in elems) { // adding event listeners
+            elems[e].addEventListener("click", (e) => {
+                currentElement.classList.remove("active");
+                currentElement = e.target;
+                currentElement.classList.add("active");
+                currentElementText = currentElement.text.trim();
+                info[currentSize][currentElementText](); // changing content
+                eventHandlers[currentSize][currentElementText](); // creating event handlers for elements inside the tab
+            })
+          }
+    }
+    else{
+        let elems = getSmallDOMElements();
+        let currentElement = elems.picture;
+        let currentElementText = currentElement.text.trim();
+        info[currentSize][currentElementText](); // showing current active tab
+        eventHandlers[currentSize][currentElementText]();
+        for (const e in elems) { // adding event listeners
+            elems[e].addEventListener("click", (e) => {
+                currentElement.classList.remove("active");
+                currentElement = e.target;
+                currentElement.classList.add("active");
+                currentElementText = currentElement.text.trim();
+                console.log(currentElementText);
+                info[currentSize][currentElementText](); // changing content
+                eventHandlers[currentSize][currentElementText](); // creating event handlers for elements inside the tab
+            })
+          }
+    }
+});
+
+// ############### BIG ELEMENTS ###############
+function getBigDOMElements(){
+    let elems = {
+        bio: document.querySelector("#dynamic-menu a:first-child"),
+        links: document.querySelector("#dynamic-menu a:nth-child(2)"),
+        settings: document.querySelector("#dynamic-menu a:last-child"),
+    };
+    return elems;
+}
+
+// generating HTML and CONTENT in MENU for bigger screen
+function createBigBio(){
     let parent = document.querySelector("#parent");
     removeChildren(parent);
 
@@ -36,8 +145,7 @@ const createBigBio = () => {
     
 };
 
-
-const createBigLinks = () => {
+function createBigLinks(){
     let parent = document.querySelector("#parent");
     removeChildren(parent);
     
@@ -51,45 +159,20 @@ const createBigLinks = () => {
 
 };
 
-// creating imput fields to add links in form
-
-const createBigSettings = () => {
+function createBigSettings(){
     let parent = document.querySelector("#parent");
     removeChildren(parent);
+    
+    const source = document.getElementById("bigSettings").innerHTML;
 
-    let a = document.getElementById("test");
-    console.log(a.innerText);
+    const template = Handlebars.compile(source);
+
+    const compiledHtml = template(data);
+
+    parent.innerHTML = compiledHtml;
 }
 
-// mapper to functions
-const info = {
-    big: {
-        Bio: createBigBio,
-        Links: createBigLinks,
-        Settings: createBigSettings
-    },
-    small: {
-        MyPicture: {},
-        Bio: {},
-        Links: {},
-        Settings: {}
-    } 
-}
-
-const eventHandlers = {
-    big: {
-        Bio: "createBigBio",
-        Links: createBigLinksEventHandlers,
-        Settings: "createBigSettings"
-    },
-    small: {
-        MyPicture: {},
-        Bio: {},
-        Links: {},
-        Settings: {}
-    } 
-}
-
+// EVENT HANDLER FOR LINKS (BIG SCREEN)
 function createBigLinksEventHandlers(){
     let addIcon = document.querySelector(".circle");
     let selectBar = document.querySelector(".dropdown")
@@ -101,7 +184,6 @@ function createBigLinksEventHandlers(){
         let selectedOption = options[idx];
         let element = createInputForSelOption(selectedOption);
         addRemoveIcon(element);
-        // addRemoveFunctionality(element);
     });
 }
 
@@ -143,70 +225,42 @@ function addRemoveIcon(element){
     element.appendChild(div);
 }
 
-// changing between two types of menu
-const renderDynamicMenu = (source) => {
-    const template = Handlebars.compile(source);
-
-    const context = {
-    greeting: 'Hello World!',
-    opinion: false,
-    languages: [
-        {name: "HTML"},
-        {name: "CSS"},
-        {name: "JavaScript"}
-        ]
-    };
-
-    const compiledHtml = template(context);
-
-    const fill = document.getElementById('dynamic-menu');
-
-    fill.innerHTML = compiledHtml;
-}
-
-async function changeMenus(currentSize) { 
-    if(widthOutput>widthThreshold){
-        const source = document.getElementById('bigMenu').innerHTML;
-        renderDynamicMenu(source);
-        return currentSize;
-    }else{
-        const source = document.getElementById('smallMenu').innerHTML;
-        renderDynamicMenu(source);
-        image.style.display = "none";
-        currentSize = "small";
-        return currentSize;
-    }
-};
-
-changeMenus(currentSize).then(currentSize => {
-    if(currentSize === "big"){
-        let elems = getBigDOMElements();
-        let currentElement = elems.bio;
-        let currentElementText = currentElement.text.trim();
-        info[currentSize][currentElementText]();
-        for (const e in elems) {
-            elems[e].addEventListener("click", (e) => {
-                currentElement.classList.remove("active");
-                currentElement = e.target;
-                currentElement.classList.add("active");
-                currentElementText = currentElement.text.trim();
-                info[currentSize][currentElementText](); // changing content
-                eventHandlers[currentSize][currentElementText](); // creating event handlers
-            })
-          }
-    }
-    else{
-        alert("OTHER STATE");
-    }
-});
-
-const getBigDOMElements = () => {
+// ############### SMALL ELEMENTS ###############
+function getSmallDOMElements(){
     let elems = {
-        bio: document.querySelector("#dynamic-menu a:first-child"),
-        links: document.querySelector("#dynamic-menu a:nth-child(2)"),
+        picture: document.querySelector("#dynamic-menu a:first-child"),
+        bio: document.querySelector("#dynamic-menu a:nth-child(2)"),
+        links: document.querySelector("#dynamic-menu a:nth-child(3)"),
         settings: document.querySelector("#dynamic-menu a:last-child"),
     };
     return elems;
+}
+// generating HTML and CONTENT for smaller screen
+function createSmallPicture(){
+    let parent = document.querySelector("#parent");
+    removeChildren(parent);
+
+    const source = document.getElementById("smallPicture").innerHTML;
+
+    const template = Handlebars.compile(source);
+
+    const compiledHtml = template(data);
+
+    parent.innerHTML = compiledHtml;
+}
+
+function createMyPictureEventHandlers(){
+    let inputElement = document.querySelector(".inputfile");
+    let img = document.querySelector(".picture-container img");
+    let reader = new FileReader();
+    inputElement.addEventListener("change", (e) => {
+        let file = inputElement.files[0];
+        reader.onload = function() {
+            img.src = reader.result;
+            console.log(img.src);
+        }
+        reader.readAsDataURL(file);
+    }, false);
 }
 
 

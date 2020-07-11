@@ -60,7 +60,29 @@
             </form>
         </div>
     </script>
-    <script id="bigSettings" type="text/x-handlebars-template"></script>
+    <script id="bigSettings" type="text/x-handlebars-template">
+        <div class="ui segment">
+            <form class="ui form">
+                <div class="field">
+                    <label>First Name</label>
+                    <input type="text" name="first-name" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <label>Last Name</label>
+                    <input type="text" name="first-name" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <label>Username</label>
+                    <input type="text" name="first-name" placeholder="First Name">
+                </div>
+                <div class="field">
+                    <label>Password</label>
+                    <input type="text" name="first-name" placeholder="First Name">
+                </div>
+                <button class="ui button" type="submit">Submit</button>
+            </form>
+        </div>
+    </script>
     <script id="smallMenu" type="text/x-handlebars-template">
         <div class="ui tabular menu">
             <a class="item active">
@@ -76,6 +98,19 @@
                 Settings
             </a>
           </div>
+          <div id ="parent" class="ui bottom attached segment"></div>
+    </script>
+    <script id="smallPicture" type="text/x-handlebars-template">
+        <div class="picture-container">
+            <form action="" method="POST">
+                <img style="max-width: 100%; height: auto; border-radius: 20px;"src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                <input id="avatar" type="file" class="inputfile">
+                <label for="avatar"><i class="file alternate icon"></i>Choose a file</label>
+                <div style="font-size: 3rem">
+                    <button><i class="ui check icon regular good"></i></button>
+                </div>
+            </form>
+        </div>
     </script>
     <p id="name"><%= user.name%></p>
 	<title></title>

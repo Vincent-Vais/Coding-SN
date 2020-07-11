@@ -47,3 +47,35 @@ i.bad:hover{
 .hidden{
 	display: none;
 }
+
+.picture-container{
+	width: 80%;
+	margin: 0 auto;
+	text-align: center;
+}
+.inputfile {
+	width: 0.1px;
+	height: 0.1px;
+	opacity: 0;
+	overflow: hidden;
+	position: absolute;
+	z-index: -1;
+}
+
+.inputfile + label{
+	font-size: 3rem;
+	margin: 6vw auto 0 auto;
+	width: 100%;
+	display: block;
+	padding: 0;
+}
+
+.inputfile:focus + label,
+.inputfile + label:hover {
+    color: red;
+}
+
+form button{
+	border: none;
+	background-color: inherit;
+}
