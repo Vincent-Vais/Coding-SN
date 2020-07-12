@@ -6,9 +6,6 @@ let currentTab = "Bio";
 let bigTabs = ["Bio", "Links", "Settings"];
 let smallTabs = ["MyPicture", "Bio", "Links", "Settings"];
 
-// USER DATA
-const data = {name: document.getElementById("name").innerText};
-
 // MAPPERS
 const info = {
     big: {
@@ -18,9 +15,9 @@ const info = {
     },
     small: {
         MyPicture: createSmallPicture,
-        Bio: "createBigBio",
-        Links: "createBigLinks",
-        Settings: "createBigSettings"
+        Bio: createSmallBio,
+        Links: createSmallLinks,
+        Settings: createBigSettings
     } 
 }
 
@@ -33,7 +30,7 @@ const eventHandlers = {
     small: {
         MyPicture: createMyPictureEventHandlers,
         Bio: "noHandlersNeeded",
-        Links: "noHandlersNeeded",
+        Links: createSmallLinksEventHandlers,
         Settings: "noHandlersNeeded"
     } 
 }
@@ -88,7 +85,9 @@ changeMenus(currentSize).then(currentSize => {
         let currentElement = elems.bio;
         let currentElementText = currentElement.text.trim();
         info[currentSize][currentElementText](); // showing current active tab
-        eventHandlers[currentSize][currentElementText]();
+        if(typeof eventHandlers[currentSize][currentElementText] !== "string"){
+            eventHandlers[currentSize][currentElementText]();
+        }
         for (const e in elems) { // adding event listeners
             elems[e].addEventListener("click", (e) => {
                 currentElement.classList.remove("active");
@@ -139,7 +138,7 @@ function createBigBio(){
 
     const template = Handlebars.compile(source);
 
-    const compiledHtml = template(data);
+    const compiledHtml = template();
 
     parent.innerHTML = compiledHtml;
     
@@ -153,7 +152,7 @@ function createBigLinks(){
 
     const template = Handlebars.compile(source);
 
-    const compiledHtml = template(data);
+    const compiledHtml = template();
 
     parent.innerHTML = compiledHtml;
 
@@ -167,7 +166,7 @@ function createBigSettings(){
 
     const template = Handlebars.compile(source);
 
-    const compiledHtml = template(data);
+    const compiledHtml = template();
 
     parent.innerHTML = compiledHtml;
 }
@@ -244,7 +243,46 @@ function createSmallPicture(){
 
     const template = Handlebars.compile(source);
 
-    const compiledHtml = template(data);
+    const compiledHtml = template();
+
+    parent.innerHTML = compiledHtml;
+}
+
+function createSmallBio(){
+    let parent = document.querySelector("#parent");
+    removeChildren(parent);
+
+    const source = document.getElementById("smallBio").innerHTML;
+
+    const template = Handlebars.compile(source);
+
+    const compiledHtml = template();
+
+    parent.innerHTML = compiledHtml;
+}
+
+function createSmallLinks(){
+    let parent = document.querySelector("#parent");
+    removeChildren(parent);
+
+    const source = document.getElementById("smallLinks").innerHTML;
+
+    const template = Handlebars.compile(source);
+
+    const compiledHtml = template();
+
+    parent.innerHTML = compiledHtml;
+}
+
+function createSmallSettings(){
+    let parent = document.querySelector("#parent");
+    removeChildren(parent);
+
+    const source = document.getElementById("smallSettings").innerHTML;
+
+    const template = Handlebars.compile(source);
+
+    const compiledHtml = template();
 
     parent.innerHTML = compiledHtml;
 }
@@ -257,10 +295,41 @@ function createMyPictureEventHandlers(){
         let file = inputElement.files[0];
         reader.onload = function() {
             img.src = reader.result;
-            console.log(img.src);
         }
         reader.readAsDataURL(file);
-    }, false);
+    }, false);   
+}
+
+function createSmallLinksEventHandlers(){
+    let addIcon = document.querySelector(".circle");
+    let selectBar = document.querySelector(".dropdown")
+    let options = document.querySelectorAll(".dropdown option");
+    let divButton = document.querySelector("#form-button");
+    addIcon.addEventListener("click", (e) => {
+        if(divButton.classList[0] === "hidden") divButton.classList.remove("hidden");
+        let idx = selectBar.options.selectedIndex
+        let selectedOption = options[idx];
+        let element = createInputForSelOption(selectedOption);
+        addSmallRemoveIcon(element);
+    });
+}
+
+function addSmallRemoveIcon(element){
+    let div = document.createElement("div");
+    div.style.display = "inline";
+    div.style.position = "absolute";
+    div.style.left = "67.5vw";
+    div.style.marginTop = "1vh";
+    let icon = document.createElement("i");
+    icon.classList.add("trash");
+    icon.classList.add("alternate");
+    icon.classList.add("icon");
+    icon.classList.add("bad");
+    icon.addEventListener("click", () => {
+        document.querySelector("#anchor").removeChild(element);
+    });
+    div.appendChild(icon);
+    element.appendChild(div);
 }
 
 

@@ -9,6 +9,20 @@ const express = require("express"),
 	  User = require("./models/user"),
 	  Blog = require("./models/blog");
 
+var fs = require('fs'); 
+var path = require('path'); 
+var multer = require('multer'); 
+
+var storage = multer.diskStorage({ 
+	destination: (req, file, cb) => { 
+		cb(null, 'uploads') 
+	}, 
+	filename: (req, file, cb) => { 
+		cb(null, file.fieldname + '-' + Date.now()) 
+	} 
+}); 
+
+var upload = multer({ storage: storage }); 
 
 mongoose.connect("mongodb://localhost:27017/blog_camp", {useNewUrlParser: true, useUnifiedTopology: true});
 
@@ -16,7 +30,8 @@ const app = express();
 
 app.set("view engine", "ejs");
 
-app.use(bodyParser.urlencoded({extended: true}));
+app.use(bodyParser.json({limit: '50mb'}));
+app.use(bodyParser.urlencoded({limit: '50mb', extended: true}));
 app.use(express.static("public"));
 app.use(methodOverride("_method"));
 app.use(expressSanitizer());
@@ -165,6 +180,38 @@ app.get("/mypage/:id", isLoggedIn, (req, res) => {
 	res.render("showUser");
 });
 
+// app.put("/mypage/:id", isLoggedIn, (req, res) => {
+// 	let values = Object.values(req.body);
+// 	let ret = values[0].replace(/\"picture\"/g,'');
+// 	ret = ret.trim();
+// 	ret = ret.replace(/data:image\/jpeg;base64,/g, '');
+// 	ret = ret.replace(/WebKitFormBoundary9I89sltTAEfiNcCA/g, '');
+// 	console.log(ret.slice(0, ret.length-42).trim());
+// 	User.findById(req.params.id, function(err, foundUser){
+// 		if(err){
+// 			console.log("Error! ", err);
+// 		}else{
+// 			foundUser.picture = ret;
+// 		}
+// 	})
+// });
+
+app.put("/mypage/:id", isLoggedIn, upload.single('image'), (req, res, next) => {
+	User.findById(req.params.id, function(err, foundUser){
+		if(err){
+			console.log(err);
+		}else{
+			foundUser.img = {
+				data: fs.readFileSync(path.join(__dirname + '/uploads/' + req.file.filename)), 
+            	contentType: 'image/png'
+			}
+			console.log(foundUser);
+			foundUser.save();
+			res.redirect("back");
+		}
+	})
+});
+
 // LOGIN GET
 app.get("/login", (req, res) => {
 	console.log("GET TO LOGIN");
@@ -187,8 +234,6 @@ app.post("/register", (req, res, next) => {
 	const newUser = new User(
 		{
 			username: req.body.username, 
-			email: req.body.email, 
-			name: `${req.body.firstName} ${req.body.lastName}`
 		});
 	User.register(newUser, req.body.password, function(err, user){
 		if(err){
@@ -207,6 +252,8 @@ app.get("/logout", (req, res) => {
 	req.logout();
 	res.redirect("/blogs");
 });
+
+
 
 app.listen(process.env.PORT || 3000, () => {
 	console.log("server has started");
