@@ -15,7 +15,7 @@
 					</div>
 					<a href="/" class="active item">Blog</a>
 					<% if(user){ %>
-					<a href="/mypage/<%= user._id %>" class="item"><%= user.name %></a>
+						<a href="/mypage/<%= user._id %>" class="item"><%= user.username %></a>
 					<a href="/blogs/new" class="item">New Post</a>
 					<% } %>
 				<div class="right menu ">

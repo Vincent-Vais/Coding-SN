@@ -2,7 +2,10 @@ const mongoose              = require("mongoose"),
 	  passportLocalMongoose = require("passport-local-mongoose");
 
 userSchema = new mongoose.Schema({
-    name: String,
+    firstName: String,
+    lastName: String,
+    bio: String,
+    links: [],
     img: { 
         data: Buffer, 
         contentType: String 

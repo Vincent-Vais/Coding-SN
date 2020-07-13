@@ -26,10 +26,9 @@
     </script>
     <script id="bigBio" type="text/x-handlebars-template">
         <div>
-            <form class="ui form">
+            <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
                 <textarea style="width: 100%; height: 100%;
-                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif">Enter your bio here
-                </textarea>
+                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif" name="bio"><% if(user.bio){ %><%= user.bio %><% }else{ %>Enter your bio here<% } %></textarea>
                 <button style="position: relative; left : 90%; top : -40px; 
                 background-color : inherit; border : 0"><i class="ui check icon regular good"></i></button>
             </form>
@@ -37,7 +36,14 @@
     </script>
     <script id="bigLinks" type="text/x-handlebars-template">
         <div class="ui segment">
-            <form class="ui form">
+            <ul>
+            <% user.links.forEach(link => {%>
+            <li>
+                <i class="<%= Object.keys(link)%> icon"></i><%= Object.values(link)%>
+            </li>
+            <% }) %>
+            </ul>
+            <form action="/mypage/<%= user._id %>/links?_method=PUT" method="POST" class="ui form">
                 <div class="field" style="width: 85%; display:inline-block;">
                     <div style="width: 100%; display:inline-block;margin-right: 1vw;">
                         <label>Social Media</label>
@@ -62,14 +68,22 @@
     </script>
     <script id="bigSettings" type="text/x-handlebars-template">
         <div class="ui segment">
-            <form class="ui form">
+            <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
                 <div class="field">
                     <label>First Name</label>
-                    <input type="text" name="first-name" placeholder="First Name">
+                    <% if(user.firstName) {%>
+                    <input type="text" name="firstName" value = "<%= user.firstName %>" placeholder="First Name">
+                    <%}else { %>
+                    <input type="text" name="firstName" placeholder="First Name">
+                    <% } %>
                 </div>
                 <div class="field">
                     <label>Last Name</label>
-                    <input type="text" name="first-name" placeholder="First Name">
+                    <% if(user.lastName) {%>
+                    <input type="text" name="lastName" value = "<%= user.lastName %>" placeholder="First Name">
+                    <%}else { %>
+                    <input type="text" name="lastName" placeholder="Last Name">
+                    <% } %>
                 </div>
                 <button class="ui button" type="submit">Submit</button>
             </form>
@@ -94,9 +108,13 @@
     </script>
     <script id="smallPicture" type="text/x-handlebars-template">
         <div class="picture-container">
-            <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" enctype="multipart/form-data">
+            <form action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
+                <% if(user.img.contentType) { %>
                 <img style="max-width: 100%; height: auto; border-radius: 20px;" src="data:image/<%=user.img.contentType%>;base64, 
                      <%=user.img.data.toString('base64')%>"> 
+                <% }else{ %>
+                <img style="width: 100%; height: 100%; border-radius: 20px;" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                <% } %>
                 <input id="avatar" type="file" name="image" class="inputfile" required>
                 <label for="avatar"><i class="file alternate icon"></i>Choose a file</label>
                 <div style="font-size: 3rem">
@@ -107,10 +125,9 @@
     </script>
     <script id="smallBio" type="text/x-handlebars-template">
         <div>
-            <form class="ui form">
+            <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
                 <textarea style="width: 100%; height: 100%;
-                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;border: none;" rows = "10">Enter your bio here
-                </textarea>
+                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;border: none;" rows = "10" name="bio"><% if(user.bio){ %><%= user.bio %><% }else{ %>Enter your bio here<% } %></textarea>
                 <button style="position: relative; left : 90%; top : -10px; 
                 background-color : inherit; border : 0"><i class="ui check icon regular good"></i></button>
             </form>
@@ -118,7 +135,14 @@
     </script>
     <script id="smallLinks" type="text/x-handlebars-template">
         <div class="ui segment">
-            <form class="ui form">
+            <ul>
+                <% user.links.forEach(link => {%>
+                <li>
+                    <i class="<%= Object.keys(link)%> icon"></i><%= Object.values(link)%>
+                </li>
+                <% }) %>
+            </ul>
+            <form action="/mypage/<%= user._id %>/links?_method=PUT" method="POST" class="ui form">
                 <div class="field" style="width: 85%; display:inline-block;">
                     <div style="width: 100%; display:inline-block;margin-right: 1vw;">
                         <label>Social Media</label>
@@ -143,14 +167,22 @@
     </script>
     <script id="smallSettings" type="text/x-handlebars-template">
         <div class="ui segment">
-            <form class="ui form">
+            <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
                 <div class="field">
                     <label>First Name</label>
-                    <input type="text" name="first-name" placeholder="First Name">
+                    <% if(user.firstName) {%>
+                    <input type="text" name="firstName" value = "<%= user.firstName %>" placeholder="First Name">
+                    <%}else { %>
+                    <input type="text" name="firstName" placeholder="First Name">
+                    <% } %>
                 </div>
                 <div class="field">
                     <label>Last Name</label>
-                    <input type="text" name="first-name" placeholder="First Name">
+                    <% if(user.lastName) {%>
+                    <input type="text" name="lastName" value = "<%= user.lastName %>" placeholder="First Name">
+                    <%}else { %>
+                    <input type="text" name="lastName" placeholder="Last Name">
+                    <% } %>
                 </div>
                 <button class="ui button" type="submit">Submit</button>
             </form>
@@ -168,7 +200,7 @@
 					</div>
 					<a href="/" class="active item">Blog</a>
 					<% if(user){ %>
-					<a href="/mypage/<%= user._id %>" class="item"><%= user.name %></a>
+                        <a href="/mypage/<%= user._id %>" class="item"><%= user.username %></a>
 					<a href="/blogs/new" class="item">New Post</a>
 					<% } %>
 				<div class="right menu ">
@@ -190,8 +222,20 @@
 	</div>
     <div class="ui main text container">
             <div class="ui stackable grid" style="padding:0; margin: 0;">
-                <div class="six wide column img-container">
-                    <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                <div style = "height: 48vh;"class="six wide column middle aligned img-container">
+                    <% if(user.img.contentType) { %>
+                    <img style="width: 100%; height: 100%; border-radius: 20px;" src="data:image/<%=user.img.contentType%>;base64, 
+                             <%=user.img.data.toString('base64')%>">
+                    <% }else{ %>
+                    <img style="width: 100%; height: 100%; border-radius: 20px;" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                    <% } %>
+                    <form id="unique" action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
+                        <input id="avatar" type="file" name="image" class="inputfile" required>
+                        <label style="font-size: 1.5rem;" for="avatar"><i class="file alternate icon"></i></label>
+                        <div>
+                            <button><i class="ui check icon regular good"></i></button>
+                        </div>
+                    </form>
                 </div>
                 <div class="ten wide column">
                     <div class="ui grid">

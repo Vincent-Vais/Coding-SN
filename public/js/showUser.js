@@ -36,7 +36,28 @@ const eventHandlers = {
 }
 
 // GENERAL USE
-const image = document.querySelector(".img-container");
+const imageDiv = document.querySelector(".img-container");
+const form = imageDiv.querySelector("form");
+form.style.display = "none";
+
+imageDiv.addEventListener("mouseover", (e) => {
+    form.style.display = "block";
+});
+
+imageDiv.addEventListener("mouseout", (e) => {
+    form.style.display = "none";
+});
+
+let inputElement = document.querySelector(".inputfile");
+let img = document.querySelector(".img-container img");
+let reader = new FileReader();
+inputElement.addEventListener("change", (e) => {
+    let file = inputElement.files[0];
+    reader.onload = function() {
+        img.src = reader.result;
+    }
+    reader.readAsDataURL(file);
+}, false);   
 
 const removeChildren = parent => {
     if(parent.children){ 
@@ -48,10 +69,6 @@ const removeChildren = parent => {
     }
 }
 
-// function changeSource() {
-//     const fileList = this.files; /* now you can work with the file list */
-// }
-
 // ############### CHANGING MENUS ###############
 // generating MENU depending on screen size
 async function changeMenus(currentSize) { 
@@ -62,7 +79,7 @@ async function changeMenus(currentSize) {
     }else{
         const source = document.getElementById('smallMenu').innerHTML;
         renderDynamicMenu(source);
-        image.style.display = "none";
+        imageDiv.style.display = "none";
         currentSize = "small";
         return currentSize;
     }
@@ -196,8 +213,8 @@ function createInputForSelOption(option){
         let text = document.createTextNode(option.text);
         label.appendChild(text);
         let input = document.createElement("input");
-        input.setAttribute("type", "text");
         input.setAttribute("name", `${option.value}`);
+        input.setAttribute("type", "text");
         input.setAttribute("placeholder", "URL");
         div.appendChild(label);
         div.appendChild(input);

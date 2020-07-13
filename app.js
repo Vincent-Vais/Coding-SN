@@ -180,23 +180,8 @@ app.get("/mypage/:id", isLoggedIn, (req, res) => {
 	res.render("showUser");
 });
 
-// app.put("/mypage/:id", isLoggedIn, (req, res) => {
-// 	let values = Object.values(req.body);
-// 	let ret = values[0].replace(/\"picture\"/g,'');
-// 	ret = ret.trim();
-// 	ret = ret.replace(/data:image\/jpeg;base64,/g, '');
-// 	ret = ret.replace(/WebKitFormBoundary9I89sltTAEfiNcCA/g, '');
-// 	console.log(ret.slice(0, ret.length-42).trim());
-// 	User.findById(req.params.id, function(err, foundUser){
-// 		if(err){
-// 			console.log("Error! ", err);
-// 		}else{
-// 			foundUser.picture = ret;
-// 		}
-// 	})
-// });
-
-app.put("/mypage/:id", isLoggedIn, upload.single('image'), (req, res, next) => {
+// image update
+app.put("/mypage/:id/upload", isLoggedIn, upload.single('image'), (req, res, next) => {
 	User.findById(req.params.id, function(err, foundUser){
 		if(err){
 			console.log(err);
@@ -211,6 +196,36 @@ app.put("/mypage/:id", isLoggedIn, upload.single('image'), (req, res, next) => {
 		}
 	})
 });
+
+app.put("/mypage/:id/links", isLoggedIn, (req, res) => {
+	User.findById(req.params.id, function(err, foundUser){
+		if(err){
+			console.log("Error! ", err);
+		}else{
+			for (const name in req.body) {
+				if(Object.keys(foundUser.links).indexOf(name) === -1){
+					let obj = {};
+					obj[name] = req.body[name];
+					foundUser.links.push(obj);
+				}
+			  }
+			foundUser.save();
+			res.redirect("back");
+		}
+	});
+});
+
+app.put("/mypage/:id", isLoggedIn, (req, res) => {
+	User.findByIdAndUpdate(req.params.id, req.body, function(err, updatedBlog){
+		if(err){
+			console.log("Error! ", err);
+		}else{
+			res.redirect("back");
+		}
+	});
+});
+
+//all other info update
 
 // LOGIN GET
 app.get("/login", (req, res) => {
