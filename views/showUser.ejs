@@ -192,6 +192,7 @@
 </head>
 <body>
     <!-- FIX MENU FOR MOBILE!!!! -->
+    <!-- NAV -->
 	<div class="ui fixed inverted menu">
 		<div class="ui container">
 			<div id="menu" class="ui secondary menu">
@@ -219,206 +220,94 @@
 				</div>
 			</div>
 		</div>
-	</div>
-    <div class="ui main text container">
-            <div class="ui stackable grid" style="padding:0; margin: 0;">
-                <div style = "height: 48vh;"class="six wide column middle aligned img-container">
+    </div>
+        <!-- PICTURE -->
+        <div class="main-third row">
+            <div class="width-3 height-12">
+                <div class="img-container">
                     <% if(user.img.contentType) { %>
-                    <img style="width: 100%; height: 100%; border-radius: 20px;" src="data:image/<%=user.img.contentType%>;base64, 
-                             <%=user.img.data.toString('base64')%>">
+                    <img class="rounded" src="data:image/<%=user.img.contentType%>;base64, 
+                                <%=user.img.data.toString('base64')%>">
                     <% }else{ %>
-                    <img style="width: 100%; height: 100%; border-radius: 20px;" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                    <img class="rounded" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
                     <% } %>
-                    <form id="unique" action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
-                        <input id="avatar" type="file" name="image" class="inputfile" required>
-                        <label style="font-size: 1.5rem;" for="avatar"><i class="file alternate icon"></i></label>
-                        <div>
-                            <button><i class="ui check icon regular good"></i></button>
+                    <form id="form-show-user" class="overlay" action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
+                        <div class="row">
+                            <div class="width-6 center-x center-y">
+                                <input id="avatar" type="file" name="image" class="inputfile" required>
+                                <label for="avatar"><i class="file alternate icon icon-inside"></i></label>
+                            </div> 
+                            <div class="width-6 center-x center-y">
+                                <button><i class="ui check icon icon-inside good"></i></button>
+                            </div>
                         </div>
                     </form>
                 </div>
-                <div class="ten wide column">
-                    <div class="ui grid">
-                        <div class="sixteen wide column" style="text-align: center">
-                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
-                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
-                                    <div class="four wide column" style="padding: 0;">
-                                        <div class="ui purple huge button show-button" style="
-                                        margin: 0;
-                                        padding: 0;
-                                        width: 100%;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        border-radius: 8px 0px 0px 8px;
-                                        height: 100%;">
-                                            <i class="align left icon" style="padding: 0;
-                                            margin: 0;
-                                            margin-top: 15px;
-                                            margin-left: 25px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="eight wide column" style="background-color: #a333c8;
-                                    margin: 0;
-                                    padding: 0;
-                                    border-radius: 0%;
-                                    color: white;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;">
-                                        <span style="font-size: 1.5em;">My Posts</span>
-                                    </div>
-                                    <div class="four wide column" style="padding: 0;
-                                    margin: 0;">
-                                        <div class="ui basic purple left pointing label" style="width: 100%;
-                                        height: 100%;
-                                        margin-left: 0;
-                                        border-radius: 0px 8px 8px 0px;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;">
-                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+            </div>
+            <!-- BUTTONS -->
+            <div class="width-9 height-12">
+                <div class="width-12 height-3">
+                    <div class="row user-buttons">
+                        <div class="width-3 right-x center-y btn-purple left-rounded">
+                            <i class="align left icon icon-centered"></i>
+                        </div>
+                        <div class="width-6 center-x center-y btn-purple">
+                            <span>My Posts</span>
+                        </div>
+                        <div class="width-3">
+                            <div id="fixed-pointing-label" class="ui basic purple left pointing label right-rounded center-x center-y">
+                                <i class="angle double right icon"></i>
                             </div>
                         </div>
-                        <div class="sixteen wide column" style="text-align: center">
-                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
-                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
-                                    <div class="four wide column" style="padding: 0;">
-                                        <div class="ui red huge button show-button" style="
-                                        margin: 0;
-                                        padding: 0;
-                                        width: 100%;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        border-radius: 8px 0px 0px 8px;
-                                        height: 100%;">
-                                            <i class="heart icon" style="padding: 0;
-                                            margin: 0;
-                                            margin-top: 15px;
-                                            margin-left: 25px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="eight wide column" style="background-color: #db2828;
-                                    margin: 0;
-                                    padding: 0;
-                                    border-radius: 0%;
-                                    color: white;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;">
-                                        <span style="font-size: 1.5em;">Bloggers</span>
-                                    </div>
-                                    <div class="four wide column" style="padding: 0;
-                                    margin: 0;">
-                                        <div class="ui basic red left pointing label" style="width: 100%;
-                                        height: 100%;
-                                        margin-left: 0;
-                                        border-radius: 0px 8px 8px 0px;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;">
-                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="width-12 height-3">
+                    <div class="row user-buttons">
+                        <div class="width-3 right-x center-y btn-red left-rounded">
+                            <i class="align left icon icon-centered"></i>
+                        </div>
+                        <div class="width-6 center-x center-y btn-red">
+                            <span>Bloggers</span>
+                        </div>
+                        <div class="width-3">
+                            <div id="fixed-pointing-label" class="ui basic red left pointing label right-rounded center-x center-y">
+                                <i class="angle double right icon"></i>
                             </div>
                         </div>
-                        <div class="sixteen wide column" style="text-align: center">
-                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
-                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
-                                    <div class="four wide column" style="padding: 0;">
-                                        <div class="ui yellow huge button show-button" style="
-                                        margin: 0;
-                                        padding: 0;
-                                        width: 100%;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        border-radius: 8px 0px 0px 8px;
-                                        height: 100%;">
-                                            <i class="user icon" style="padding: 0;
-                                            margin: 0;
-                                            margin-top: 15px;
-                                            margin-left: 25px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="eight wide column" style="background-color: #fbbd08;
-                                    margin: 0;
-                                    padding: 0;
-                                    border-radius: 0%;
-                                    color: white;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;">
-                                        <span style="font-size: 1.5em;">Followers</span>
-                                    </div>
-                                    <div class="four wide column" style="padding: 0;
-                                    margin: 0;">
-                                        <div class="ui basic yellow left pointing label" style="width: 100%;
-                                        height: 100%;
-                                        margin-left: 0;
-                                        border-radius: 0px 8px 8px 0px;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;">
-                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="width-12 height-3">
+                    <div class="row user-buttons">
+                        <div class="width-3 right-x center-y btn-yellow left-rounded">
+                            <i class="align left icon icon-centered"></i>
+                        </div>
+                        <div class="width-6 center-x center-y btn-yellow">
+                            <span>Followers</span>
+                        </div>
+                        <div class="width-3">
+                            <div id="fixed-pointing-label" class="ui basic yellow left pointing label right-rounded center-x center-y">
+                                <i class="angle double right icon"></i>
                             </div>
                         </div>
-                        <div class="sixteen wide column" style="text-align: center">
-                            <div class="ui labeled huge button" style="width: 80%; margin: 0 auto;"tabindex="0">
-                                <div class="ui center aligned grid" style="width: 100%; padding: 0; margin: 0;">
-                                    <div class="four wide column" style="padding: 0;">
-                                        <div class="ui teal huge button show-button" style="
-                                        margin: 0;
-                                        padding: 0;
-                                        width: 100%;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;
-                                        border-radius: 8px 0px 0px 8px;
-                                        height: 100%;">
-                                            <i class="coffee icon" style="padding: 0;
-                                            margin: 0;
-                                            margin-top: 15px;
-                                            margin-left: 25px;"></i>
-                                        </div>
-                                    </div>
-                                    <div class="eight wide column" style="background-color: #00b5ad;
-                                    margin: 0;
-                                    padding: 0;
-                                    border-radius: 0%;
-                                    color: white;
-                                    display: flex;
-                                    justify-content: center;
-                                    align-items: center;">
-                                        <span style="font-size: 1.5em;">Events</span>
-                                    </div>
-                                    <div class="four wide column" style="padding: 0;
-                                    margin: 0;">
-                                        <div class="ui basic teal left pointing label" style="width: 100%;
-                                        height: 100%;
-                                        margin-left: 0;
-                                        border-radius: 0px 8px 8px 0px;
-                                        display: flex;
-                                        justify-content: center;
-                                        align-items: center;">
-                                            <i class="angle double right icon" style="font-size: 4em; margin-right: 0;"></i>
-                                        </div>
-                                    </div>
-                                </div>
+                    </div>
+                </div>
+                <div class="width-12 height-3">
+                    <div class="row user-buttons">
+                        <div class="width-3 right-x center-y btn-teal left-rounded">
+                            <i class="align left icon icon-centered"></i>
+                        </div>
+                        <div class="width-6 center-x center-y btn-teal">
+                            <span>Events</span>
+                        </div>
+                        <div class="width-3">
+                            <div id="fixed-pointing-label" class="ui basic teal left pointing label right-rounded center-x center-y">
+                                <i class="angle double right icon"></i>
                             </div>
                         </div>
                     </div>
                 </div>
             </div>
-    </div>
+        </div>
     <div id="dynamic-menu" style="width: 80%; margin: 5% auto;">
     </div>
 <script type="module" src = "/js/showUser.js"></script>
