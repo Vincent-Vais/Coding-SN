@@ -30,16 +30,6 @@ i.icon {
 	width: 100%;
 }
 
-/* .img-container > img {
-    width: 100%;
-    height: auto;
-    border-radius: 30%;
-} */
-
-.regular{
-	color: rgba(128, 255, 128, 0.3);
-}
-
 i.good:hover{
 	color: rgba(128, 255, 128, 1.0);
 }
@@ -66,22 +56,9 @@ i.bad:hover{
 	z-index: -1;
 }
 
-/* .inputfile + label{
-	font-size: 3rem;
-	margin: 6vw auto 0 auto;
-	width: 100%;
-	display: block;
-	padding: 0;
-} */
-
 .inputfile:focus + label,
 .inputfile + label:hover {
     color: red;
-}
-
-form button{
-	border: none;
-	background-color: inherit;
 }
 
 #unique{
@@ -121,9 +98,8 @@ button{
 	margin: 0;
 	padding: 0;
 	border: none;
-	background-color: rgb(255, 255, 255);
+	background-color: rgba(255, 255, 255, 0);
 }
-
 
 
 
@@ -133,12 +109,16 @@ button{
 /*                    GRID                   */
 
 /*----------------------------------------------------------------------------------------------*/
+
+/* Rows */
 .row{
 	display: flex;
 	flex: auto;
 	flex-wrap: wrap;
 }
 
+/* Collumns */
+/*         width */
 .width-3{
 	width: 25%;
 }
@@ -151,15 +131,15 @@ button{
 .width-12{
 	width: 100%;
 }
-
+/*         height */
 .height-3{
 	height: 25%;
 }
-
 .height-12{
 	height: 100%;
 }
 
+/* Position */
 .center-x{
 	display: flex;
 	justify-content: center;
@@ -176,14 +156,13 @@ button{
 
 
 
-
-
 /*----------------------------------------------------------------------------------------------*/
 
 /*                    REUSABLE               */
 
 /*----------------------------------------------------------------------------------------------*/
 
+/* General */
 .hidden{
 	display: none;
 }
@@ -203,6 +182,10 @@ button{
 	max-width: 1200px!important;
 	margin: 15vh auto 5vh auto;
 	height: 50vh;
+}
+.div-inline{
+	width: 85%; 
+	display:inline-block;
 }
 
 /* Images */
@@ -228,11 +211,17 @@ button{
 }
 
 /* Icons */
-i.good:hover{
+i.grn{
+	color: rgba(128, 255, 128, 0.3);
+}
+i.grn:hover{
 	color: rgba(128, 255, 128, 1.0);
 }
-i.bad:hover{
-	color: red;
+i.rd{
+	color: rgba(219, 40, 40, 0.3)
+}
+i.rd:hover{
+	color: rgba(219, 40, 40, 1.0);
 }
 
 /* Buttons */
@@ -242,7 +231,7 @@ i.bad:hover{
 }
 .btn-red{
 	background-color: #db2828;
-	border: 1px solid #db2828;
+	border: 1px solid rgb(219, 40, 40);
 }
 .btn-yellow{
 	background-color: #fbbd08;
@@ -252,9 +241,6 @@ i.bad:hover{
 	background-color: #00b5ad;
 	border: 1px solid #00b5ad;
 }
-
-
-
 
 /*----------------------------------------------------------------------------------------------*/
 
@@ -282,6 +268,10 @@ i.bad:hover{
 	margin-top: 1vh;
 }
 
+#big-Image{
+	display: none;
+}
+
 /* main Buttons */
 .user-buttons{
 	padding: 25px;
@@ -302,10 +292,108 @@ i.bad:hover{
 	font-size: 1.5rem!important;
 	text-align: center;
 }
-
 #fixed-pointing-label i{
 	margin: 0;
 	padding: 0;
 	font-size: 4rem!important;
 	margin-top: 1.5vh;
+}
+
+
+/*---------------bigBio---------------*/
+
+textarea{
+	width: 100%;
+	height: 100%;
+    font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;
+}
+form .btn-check{
+	position: relative; 
+	left : 90%;
+	top : -40px; 
+	background-color : inherit; 
+	border : 0;
+}
+
+
+
+/*---------------bigLinks---------------*/
+
+#form-big-links .div-inline div:nth-of-type(1){
+	width: 100%; 
+	display:inline-block;
+	margin-right: 1vw;
+}
+#form-big-links .div-inline div:nth-of-type(2){
+	display:inline-block;
+	width: 25%;
+	position: relative; 
+	top: -3.5vh; 
+	left: 52.5vw;
+}
+#form-big-links .div-inline i{
+	font-size: 3rem!important;
+}
+
+#form-big-links .div-links{
+	margin: 0;
+	height: 1rem;
+}
+
+#form-big-links .div-removeIcon{
+	display : inline;
+    position : absolute;
+    left : 53vw;
+    margin-top : 1vh;
+}
+
+/*---------------smallPicture---------------*/
+
+#div-small-picture .icon-container{
+	margin-bottom: 2.5vh;
+}
+
+
+
+/*---------------smallBio---------------*/
+
+#form-small-textarea button{
+	position: absolute; 
+	left : 90%; 
+	top : 15vh; 		
+	background-color : 
+	inherit; 
+	border : 0"
+}
+
+
+
+/*---------------smallLinks---------------*/
+
+#form-small-links .icon-container{
+	display: inline-block; 
+	width: 10%;
+	line-height: 1.8rem;
+	font-size: 1rem!important;
+	vertical-align: middle;
+}
+
+#form-small-links .icon-container i{
+	margin-left: 50%;
+}
+
+#form-button{
+	margin-top: 3vh;
+}
+
+#form-small-links .div-links{
+	margin: 0;
+	height: 1rem;
+}
+
+#form-small-links .div-removeIcon{
+	display : inline;
+    position : absolute;
+    left : 65vw;
+    margin-top : 1vh;
 }

@@ -5,17 +5,18 @@
 	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/semantic-ui/2.4.1/semantic.min.css">
     <link rel="stylesheet" type="text/css" href="/stylesheets/app.css">
     <script src="https://cdnjs.cloudflare.com/ajax/libs/handlebars.js/4.7.6/handlebars.min.js"></script>
-    <script id="bigMenu" type="text/x-handlebars-template">
+    <script id="big-Menu" type="text/x-handlebars-template">
         <div class="ui grid">
             <div class="four wide column">
                 <div class="ui vertical fluid tabular menu">
-                    <a class="item active">
+                    <!-- <a id="Bio" class="item active"> -->
+                    <a id="Bio" class="item">
                         Bio
                     </a>
-                    <a class="item">
+                    <a id = "Links" class="item">
                         Links
                     </a>
-                    <a class="item">
+                    <a id = "Settings" class="item">
                         Settings
                     </a>
                 </div>
@@ -24,17 +25,15 @@
             </div>
         </div>
     </script>
-    <script id="bigBio" type="text/x-handlebars-template">
+    <script id="big-Bio" type="text/x-handlebars-template">
         <div>
             <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
-                <textarea style="width: 100%; height: 100%;
-                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif" name="bio"><% if(user.bio){ %><%= user.bio %><% }else{ %>Enter your bio here<% } %></textarea>
-                <button style="position: relative; left : 90%; top : -40px; 
-                background-color : inherit; border : 0"><i class="ui check icon regular good"></i></button>
+                <textarea  name="bio"><% if(user.bio){ %><%= user.bio %><% }else{ %>Enter your bio here<% } %></textarea>
+                <button class="btn-check"><i class="ui check icon grn"></i></button>
             </form>
         </div>
     </script>
-    <script id="bigLinks" type="text/x-handlebars-template">
+    <script id="big-Links" type="text/x-handlebars-template">
         <div class="ui segment">
             <ul>
             <% user.links.forEach(link => {%>
@@ -43,21 +42,21 @@
             </li>
             <% }) %>
             </ul>
-            <form action="/mypage/<%= user._id %>/links?_method=PUT" method="POST" class="ui form">
-                <div class="field" style="width: 85%; display:inline-block;">
-                    <div style="width: 100%; display:inline-block;margin-right: 1vw;">
+            <form id="form-big-links"action="/mypage/<%= user._id %>/links?_method=PUT" method="POST" class="ui form">
+                <div class="field div-inline div-links">
+                    <div>
                         <label>Social Media</label>
-                    <select class="ui fluid dropdown">
-                        <option value="instagram">Instagram</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="twitter">Twitter</option>
-                        <option value="github">GitHub</option>
-                        <option value="linkedin">LinkedIn</option>
-                    </select>
+                        <select class="ui fluid dropdown">
+                            <option value="instagram">Instagram</option>
+                            <option value="facebook">Facebook</option>
+                            <option value="twitter">Twitter</option>
+                            <option value="github">GitHub</option>
+                            <option value="linkedin">LinkedIn</option>
+                        </select>
                     </div>
-                </div>
-                <div style="position: absolute; top: 3.5vh; left: 52.5vw;">
-                    <i class="ui plus circle icon good" style="font-size: 3rem;"></i>
+                    <div>
+                        <i class="ui plus circle icon grn"></i>
+                    </div>
                 </div>
                 <div id="anchor"></div>
                 <div id="form-button" class="hidden" style="margin-top: 3vh;">
@@ -66,7 +65,7 @@
             </form>
         </div>
     </script>
-    <script id="bigSettings" type="text/x-handlebars-template">
+    <script id="big-Settings" type="text/x-handlebars-template">
         <div class="ui segment">
             <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
                 <div class="field">
@@ -89,51 +88,56 @@
             </form>
         </div>
     </script>
-    <script id="smallMenu" type="text/x-handlebars-template">
+    <script id="small-Menu" type="text/x-handlebars-template">
         <div class="ui tabular menu">
-            <a class="item active">
+            <a id = "Picture" class="item">
                 MyPicture
             </a>
-            <a class="item">
+            <a id="Bio" class="item">
                 Bio
             </a>
-            <a class="item">
+            <a id = "Links" class="item">
                 Links
             </a>
-            <a class="item">
+            <a id = "Settings" class="item">
                 Settings
             </a>
           </div>
           <div id ="parent" class="ui bottom attached segment" style="padding: 0;"></div>
     </script>
-    <script id="smallPicture" type="text/x-handlebars-template">
-        <div class="picture-container">
+    <script id="small-Picture" type="text/x-handlebars-template">
+        <div id="div-small-picture" class="picture-container">
             <form action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
-                <% if(user.img.contentType) { %>
-                <img style="max-width: 100%; height: auto; border-radius: 20px;" src="data:image/<%=user.img.contentType%>;base64, 
-                     <%=user.img.data.toString('base64')%>"> 
-                <% }else{ %>
-                <img style="width: 100%; height: 100%; border-radius: 20px;" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
-                <% } %>
-                <input id="avatar" type="file" name="image" class="inputfile" required>
-                <label for="avatar"><i class="file alternate icon"></i>Choose a file</label>
-                <div style="font-size: 3rem">
-                    <button><i class="ui check icon regular good"></i></button>
+                <div class="icon-container">
+                    <div>
+                        <label for="smallImgInput"><i class="file alternate icon"></i>Choose a file</label>
+                        <input id="smallImgInput" type="file" name="image" class="inputfile" required>
+                    </div>
+                    <div>
+                        <!-- <button type="submit" class="hidden"><i class="ui check icon grn"></i></button> -->
+                        <button type="submit"><i class="ui check icon grn"></i></button>
+                    </div>
+                </div>
+                <div id="small-Image" class="img-container">
+                    <% if(user.img.contentType) { %>
+                    <img class="rounded" style="max-width: 100%; height: auto;" src="data:image/<%=user.img.contentType%>;base64, 
+                            <%=user.img.data.toString('base64')%>"> 
+                    <% }else{ %>
+                    <img class="rounded" style="width: 100%; height: 100%;" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                    <% } %>
                 </div>
             </form>
         </div>
     </script>
-    <script id="smallBio" type="text/x-handlebars-template">
+    <script id="small-Bio" type="text/x-handlebars-template">
         <div>
-            <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
-                <textarea style="width: 100%; height: 100%;
-                font-family : Lato,'Helvetica Neue',Arial,Helvetica,sans-serif;border: none;" rows = "10" name="bio"><% if(user.bio){ %><%= user.bio %><% }else{ %>Enter your bio here<% } %></textarea>
-                <button style="position: relative; left : 90%; top : -10px; 
-                background-color : inherit; border : 0"><i class="ui check icon regular good"></i></button>
+            <form id = "form-small-textarea" style="position: relative;"action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
+                <textarea name="bio"><% if(user.bio){ %><%= user.bio %><% }else{ %>Enter your bio here<% } %></textarea>
+                <button><i class="ui check icon grn"></i></button>
             </form>
         </div>
     </script>
-    <script id="smallLinks" type="text/x-handlebars-template">
+    <script id="small-Links" type="text/x-handlebars-template">
         <div class="ui segment">
             <ul>
                 <% user.links.forEach(link => {%>
@@ -142,30 +146,32 @@
                 </li>
                 <% }) %>
             </ul>
-            <form action="/mypage/<%= user._id %>/links?_method=PUT" method="POST" class="ui form">
-                <div class="field" style="width: 85%; display:inline-block;">
-                    <div style="width: 100%; display:inline-block;margin-right: 1vw;">
-                        <label>Social Media</label>
-                    <select class="ui fluid dropdown">
-                        <option value="instagram">Instagram</option>
-                        <option value="facebook">Facebook</option>
-                        <option value="twitter">Twitter</option>
-                        <option value="github">GitHub</option>
-                        <option value="linkedin">LinkedIn</option>
-                    </select>
+            <form id="form-small-links"action="/mypage/<%= user._id %>/links?_method=PUT" method="POST" class="ui form">
+                <div class="field">
+                    <div>
+                        <div class="div-inline">
+                            <label>Social Media</label>
+                            <select class="ui fluid dropdown">
+                                <option value="instagram">Instagram</option>
+                                <option value="facebook">Facebook</option>
+                                <option value="twitter">Twitter</option>
+                                <option value="github">GitHub</option>
+                                <option value="linkedin">LinkedIn</option>
+                            </select>
+                        </div>
+                        <div class="icon-container">
+                            <i class="ui plus circle icon grn"></i>
+                        </div>
                     </div>
                 </div>
-                <div style="position: absolute; top: 3.5vh; left: 67.5vw;">
-                    <i class="ui plus circle icon good" style="font-size: 3rem;"></i>
-                </div>
                 <div id="anchor"></div>
-                <div id="form-button" class="hidden" style="margin-top: 3vh;">
+                <div id="form-button" class="hidden">
                     <button class="ui button" type="submit">Submit</button>
                 </div>
             </form>
         </div>
     </script>
-    <script id="smallSettings" type="text/x-handlebars-template">
+    <script id="small-Settings" type="text/x-handlebars-template">
         <div class="ui segment">
             <form action="/mypage/<%= user._id %>?_method=PUT" method="POST" class="ui form">
                 <div class="field">
@@ -221,94 +227,94 @@
 			</div>
 		</div>
     </div>
-        <!-- PICTURE -->
-        <div class="main-third row">
-            <div class="width-3 height-12">
-                <div class="img-container">
-                    <% if(user.img.contentType) { %>
-                    <img class="rounded" src="data:image/<%=user.img.contentType%>;base64, 
-                                <%=user.img.data.toString('base64')%>">
-                    <% }else{ %>
-                    <img class="rounded" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
-                    <% } %>
-                    <form id="form-show-user" class="overlay" action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
-                        <div class="row">
-                            <div class="width-6 center-x center-y">
-                                <input id="avatar" type="file" name="image" class="inputfile" required>
-                                <label for="avatar"><i class="file alternate icon icon-inside"></i></label>
-                            </div> 
-                            <div class="width-6 center-x center-y">
-                                <button><i class="ui check icon icon-inside good"></i></button>
-                            </div>
+    <!-- PICTURE -->
+    <div class="main-third row">
+        <div class="width-3 height-12">
+            <div id="big-Image" class="img-container">
+                <% if(user.img.contentType) { %>
+                <img class="rounded" src="data:image/<%=user.img.contentType%>;base64, 
+                            <%=user.img.data.toString('base64')%>">
+                <% }else{ %>
+                <img class="rounded" src="https://images.unsplash.com/photo-1594568644264-65471ca94c9a?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=500&q=60">
+                <% } %>
+                <form id="form-show-user" class="overlay" action="/mypage/<%= user._id %>/upload?_method=PUT" method="POST" enctype="multipart/form-data">
+                    <div class="row">
+                        <div class="width-6 center-x center-y">
+                            <input id="bigImgInput" type="file" name="image" class="inputfile" required>
+                            <label for="bigImgInput"><i class="file alternate icon icon-inside"></i></label>
+                        </div> 
+                        <div class="width-6 center-x center-y">
+                            <button><i class="ui check icon icon-inside good"></i></button>
                         </div>
-                    </form>
+                    </div>
+                </form>
+            </div>
+        </div>
+        <!-- BUTTONS -->
+        <div class="width-9 height-12">
+            <div class="width-12 height-3">
+                <div class="row user-buttons">
+                    <div class="width-3 right-x center-y btn-purple left-rounded">
+                        <i class="align left icon icon-centered"></i>
+                    </div>
+                    <div class="width-6 center-x center-y btn-purple">
+                        <span>My Posts</span>
+                    </div>
+                    <div class="width-3">
+                        <div id="fixed-pointing-label" class="ui basic purple left pointing label right-rounded center-x center-y">
+                            <i class="angle double right icon"></i>
+                        </div>
+                    </div>
                 </div>
             </div>
-            <!-- BUTTONS -->
-            <div class="width-9 height-12">
-                <div class="width-12 height-3">
-                    <div class="row user-buttons">
-                        <div class="width-3 right-x center-y btn-purple left-rounded">
-                            <i class="align left icon icon-centered"></i>
-                        </div>
-                        <div class="width-6 center-x center-y btn-purple">
-                            <span>My Posts</span>
-                        </div>
-                        <div class="width-3">
-                            <div id="fixed-pointing-label" class="ui basic purple left pointing label right-rounded center-x center-y">
-                                <i class="angle double right icon"></i>
-                            </div>
+            <div class="width-12 height-3">
+                <div class="row user-buttons">
+                    <div class="width-3 right-x center-y btn-red left-rounded">
+                        <i class="align left icon icon-centered"></i>
+                    </div>
+                    <div class="width-6 center-x center-y btn-red">
+                        <span>Bloggers</span>
+                    </div>
+                    <div class="width-3">
+                        <div id="fixed-pointing-label" class="ui basic red left pointing label right-rounded center-x center-y">
+                            <i class="angle double right icon"></i>
                         </div>
                     </div>
                 </div>
-                <div class="width-12 height-3">
-                    <div class="row user-buttons">
-                        <div class="width-3 right-x center-y btn-red left-rounded">
-                            <i class="align left icon icon-centered"></i>
-                        </div>
-                        <div class="width-6 center-x center-y btn-red">
-                            <span>Bloggers</span>
-                        </div>
-                        <div class="width-3">
-                            <div id="fixed-pointing-label" class="ui basic red left pointing label right-rounded center-x center-y">
-                                <i class="angle double right icon"></i>
-                            </div>
+            </div>
+            <div class="width-12 height-3">
+                <div class="row user-buttons">
+                    <div class="width-3 right-x center-y btn-yellow left-rounded">
+                        <i class="align left icon icon-centered"></i>
+                    </div>
+                    <div class="width-6 center-x center-y btn-yellow">
+                        <span>Followers</span>
+                    </div>
+                    <div class="width-3">
+                        <div id="fixed-pointing-label" class="ui basic yellow left pointing label right-rounded center-x center-y">
+                            <i class="angle double right icon"></i>
                         </div>
                     </div>
                 </div>
-                <div class="width-12 height-3">
-                    <div class="row user-buttons">
-                        <div class="width-3 right-x center-y btn-yellow left-rounded">
-                            <i class="align left icon icon-centered"></i>
-                        </div>
-                        <div class="width-6 center-x center-y btn-yellow">
-                            <span>Followers</span>
-                        </div>
-                        <div class="width-3">
-                            <div id="fixed-pointing-label" class="ui basic yellow left pointing label right-rounded center-x center-y">
-                                <i class="angle double right icon"></i>
-                            </div>
-                        </div>
+            </div>
+            <div class="width-12 height-3">
+                <div class="row user-buttons">
+                    <div class="width-3 right-x center-y btn-teal left-rounded">
+                        <i class="align left icon icon-centered"></i>
                     </div>
-                </div>
-                <div class="width-12 height-3">
-                    <div class="row user-buttons">
-                        <div class="width-3 right-x center-y btn-teal left-rounded">
-                            <i class="align left icon icon-centered"></i>
-                        </div>
-                        <div class="width-6 center-x center-y btn-teal">
-                            <span>Events</span>
-                        </div>
-                        <div class="width-3">
-                            <div id="fixed-pointing-label" class="ui basic teal left pointing label right-rounded center-x center-y">
-                                <i class="angle double right icon"></i>
-                            </div>
+                    <div class="width-6 center-x center-y btn-teal">
+                        <span>Events</span>
+                    </div>
+                    <div class="width-3">
+                        <div id="fixed-pointing-label" class="ui basic teal left pointing label right-rounded center-x center-y">
+                            <i class="angle double right icon"></i>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+    </div>
     <div id="dynamic-menu" style="width: 80%; margin: 5% auto;">
     </div>
-<script type="module" src = "/js/showUser.js"></script>
+<script type="module" src = "/js/copyshowUser.js"></script>
 <%- include("partials/footer") %>

@@ -1,3 +1,70 @@
+// Open with initial settings
+// Change content depending on screen width and key pressed
+// Add some element if necessary
+// const dataUI = {
+//     screenWidth: window.innerWidth,
+//     widthThreshold: 765,
+//     sizes: ["big", "small"],
+//     bigTabs: ["Bio", "Links", "Settings"],
+//     smallTabs: ["MyPicture", "Bio", "Links", "Settings"],
+//     DOM:{
+//         big: {
+//             bio: "#dynamic-menu a:first-child",
+//             links: "#dynamic-menu a:nth-child(2)",
+//             settings: "#dynamic-menu a:last-child"
+//         },
+//         small:{
+
+//         }
+//     }
+// }
+
+// class currentUI{
+//     constructor(width, curTab, elems){
+//         this._curWidth = this.width;
+//         this._curTab = curTab;
+//         this._elems = elems;
+//     }
+
+//     // Setters and getters
+//     set curWidth(width){
+//         this._curWidth = width;
+//     }
+//     get curWidth(){
+//         return this._curWidth
+//     }
+
+//     set curTab(tab){
+//         this._curTab = tab;
+//     }
+//     get curTab(){
+//         return this._curTab
+//     }
+// }
+
+class controllerUI{
+    constructor(height, width) {
+        this.height = height;
+        this.width = width;
+    }
+    getMenuTabs(num){
+        let elems, nodeList;
+        elems = {}
+        nodeList = document.querySelectorAll("#dynamic-menu a");
+        for(let i = 0; i < nodeList.length; i++){
+            elems[nodeList[i].id] = nodeList[i]
+        }
+        return elems
+    }
+}
+
+    // 1. Initialize currentUI with dataUI
+    // init(){
+        // 1. Set width and current tab in currentUI
+        // 2. Set event Listeners
+    // }
+    // 2. Change currentUI accorging to event Listeners
+// }
 // GLOBAL VARIABLES
 const widthOutput = window.innerWidth;
 const widthThreshold = 765;
@@ -114,7 +181,7 @@ changeMenus(currentSize).then(currentSize => {
                 info[currentSize][currentElementText](); // changing content
                 eventHandlers[currentSize][currentElementText](); // creating event handlers for elements inside the tab
             })
-          }
+        }
     }
     else{
         let elems = getSmallDOMElements();

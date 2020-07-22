@@ -192,11 +192,14 @@ app.put("/mypage/:id/upload", isLoggedIn, upload.single('image'), (req, res, nex
 			}
 			console.log(foundUser);
 			foundUser.save();
-			res.redirect("back");
+			setTimeout(function(){
+				res.redirect(`/mypage/${req.params.id}`);
+			}, 0);
 		}
 	})
 });
 
+// links update
 app.put("/mypage/:id/links", isLoggedIn, (req, res) => {
 	User.findById(req.params.id, function(err, foundUser){
 		if(err){
@@ -210,22 +213,26 @@ app.put("/mypage/:id/links", isLoggedIn, (req, res) => {
 				}
 			  }
 			foundUser.save();
-			res.redirect("back");
+			setTimeout(function(){
+				res.redirect(`/mypage/${req.params.id}`);
+			}, 0);
 		}
 	});
 });
 
+// all other info update
 app.put("/mypage/:id", isLoggedIn, (req, res) => {
 	User.findByIdAndUpdate(req.params.id, req.body, function(err, updatedBlog){
 		if(err){
 			console.log("Error! ", err);
 		}else{
-			res.redirect("back");
+			setTimeout(function(){
+				res.redirect(`/mypage/${req.params.id}`);
+			}, 0);
 		}
 	});
 });
 
-//all other info update
 
 // LOGIN GET
 app.get("/login", (req, res) => {
