@@ -1,422 +1,238 @@
-// Open with initial settings
-// Change content depending on screen width and key pressed
-// Add some element if necessary
-// const dataUI = {
-//     screenWidth: window.innerWidth,
-//     widthThreshold: 765,
-//     sizes: ["big", "small"],
-//     bigTabs: ["Bio", "Links", "Settings"],
-//     smallTabs: ["MyPicture", "Bio", "Links", "Settings"],
-//     DOM:{
-//         big: {
-//             bio: "#dynamic-menu a:first-child",
-//             links: "#dynamic-menu a:nth-child(2)",
-//             settings: "#dynamic-menu a:last-child"
-//         },
-//         small:{
-
-//         }
-//     }
-// }
-
-// class currentUI{
-//     constructor(width, curTab, elems){
-//         this._curWidth = this.width;
-//         this._curTab = curTab;
-//         this._elems = elems;
-//     }
-
-//     // Setters and getters
-//     set curWidth(width){
-//         this._curWidth = width;
-//     }
-//     get curWidth(){
-//         return this._curWidth
-//     }
-
-//     set curTab(tab){
-//         this._curTab = tab;
-//     }
-//     get curTab(){
-//         return this._curTab
-//     }
-// }
-
-class controllerUI{
-    constructor(height, width) {
-        this.height = height;
-        this.width = width;
-    }
-    getMenuTabs(num){
-        let elems, nodeList;
-        elems = {}
-        nodeList = document.querySelectorAll("#dynamic-menu a");
-        for(let i = 0; i < nodeList.length; i++){
-            elems[nodeList[i].id] = nodeList[i]
-        }
-        return elems
-    }
+const initialSettings = {
+        widthThreshold: 765,
+        defaultTabSelector: "#Bio"
 }
 
-    // 1. Initialize currentUI with dataUI
-    // init(){
-        // 1. Set width and current tab in currentUI
-        // 2. Set event Listeners
-    // }
-    // 2. Change currentUI accorging to event Listeners
-// }
-// GLOBAL VARIABLES
-const widthOutput = window.innerWidth;
-const widthThreshold = 765;
-let currentSize = "big";
-let currentTab = "Bio";
-let bigTabs = ["Bio", "Links", "Settings"];
-let smallTabs = ["MyPicture", "Bio", "Links", "Settings"];
-
-// MAPPERS
-const info = {
-    big: {
-        Bio: createBigBio,
-        Links: createBigLinks,
-        Settings: createBigSettings
-    },
-    small: {
-        MyPicture: createSmallPicture,
-        Bio: createSmallBio,
-        Links: createSmallLinks,
-        Settings: createBigSettings
-    } 
-}
-
-const eventHandlers = {
-    big: {
-        Bio: "noHandlersNeeded",
-        Links: createBigLinksEventHandlers,
-        Settings: "noHandlersNeeded"
-    },
-    small: {
-        MyPicture: createMyPictureEventHandlers,
-        Bio: "noHandlersNeeded",
-        Links: createSmallLinksEventHandlers,
-        Settings: "noHandlersNeeded"
-    } 
-}
-
-// GENERAL USE
-const imageDiv = document.querySelector(".img-container");
-const form = imageDiv.querySelector("form");
-form.style.display = "none";
-
-imageDiv.addEventListener("mouseover", (e) => {
-    form.style.display = "block";
-});
-
-imageDiv.addEventListener("mouseout", (e) => {
-    form.style.display = "none";
-});
-
-let inputElement = document.querySelector(".inputfile");
-let img = document.querySelector(".img-container img");
-let reader = new FileReader();
-inputElement.addEventListener("change", (e) => {
-    let file = inputElement.files[0];
-    reader.onload = function() {
-        img.src = reader.result;
+// CLASSES
+class DynamicUI{
+    constructor(source, fill){
+        this._source= source;
+        this._fill = fill;
+        this._children = undefined;
     }
-    reader.readAsDataURL(file);
-}, false);   
-
-const removeChildren = parent => {
-    if(parent.children){ 
-        let child = parent.lastElementChild;  
-        while (child) { 
-            parent.removeChild(child); 
-            child = parent.lastElementChild; 
+    addSourceToHtml(){
+        if(this.source){
+            let source = this._source.innerHTML;
+            const template = Handlebars.compile(source);
+            const compiledHtml = template();
+            this._fill.innerHTML = compiledHtml;
         }
     }
-}
-
-// ############### CHANGING MENUS ###############
-// generating MENU depending on screen size
-async function changeMenus(currentSize) { 
-    if(widthOutput>widthThreshold){
-        const source = document.getElementById('bigMenu').innerHTML;
-        renderDynamicMenu(source);
-        return currentSize;
-    }else{
-        const source = document.getElementById('smallMenu').innerHTML;
-        renderDynamicMenu(source);
-        imageDiv.style.display = "none";
-        currentSize = "small";
-        return currentSize;
-    }
-};
-
-function renderDynamicMenu(source){
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    const fill = document.getElementById('dynamic-menu');
-
-    fill.innerHTML = compiledHtml;
-}
-
-// DIFFERENT ELEMENTS FOR DIFERENT SIZES
-changeMenus(currentSize).then(currentSize => {
-    if(currentSize === "big"){
-        let elems = getBigDOMElements();
-        let currentElement = elems.bio;
-        let currentElementText = currentElement.text.trim();
-        info[currentSize][currentElementText](); // showing current active tab
-        if(typeof eventHandlers[currentSize][currentElementText] !== "string"){
-            eventHandlers[currentSize][currentElementText]();
+    addChild(child){
+        if(!this._children){
+            this._children = [];
         }
-        for (const e in elems) { // adding event listeners
-            elems[e].addEventListener("click", (e) => {
-                currentElement.classList.remove("active");
-                currentElement = e.target;
-                currentElement.classList.add("active");
-                currentElementText = currentElement.text.trim();
-                info[currentSize][currentElementText](); // changing content
-                eventHandlers[currentSize][currentElementText](); // creating event handlers for elements inside the tab
-            })
+        this._children.push(child);
+    }
+    removeHtml(){
+        if(this._fill && this._fill.children){ 
+            let child = this._fill.lastElementChild;  
+            while (child) { 
+                this._fill.removeChild(child); 
+                child = this._fill.lastElementChild; 
+            }
         }
     }
-    else{
-        let elems = getSmallDOMElements();
-        let currentElement = elems.picture;
-        let currentElementText = currentElement.text.trim();
-        info[currentSize][currentElementText](); // showing current active tab
-        eventHandlers[currentSize][currentElementText]();
-        for (const e in elems) { // adding event listeners
-            elems[e].addEventListener("click", (e) => {
-                currentElement.classList.remove("active");
-                currentElement = e.target;
-                currentElement.classList.add("active");
-                currentElementText = currentElement.text.trim();
-                console.log(currentElementText);
-                info[currentSize][currentElementText](); // changing content
-                eventHandlers[currentSize][currentElementText](); // creating event handlers for elements inside the tab
-            })
-          }
+    get children(){
+        if(this._children){
+            return this._children;
+        }
     }
-});
-
-// ############### BIG ELEMENTS ###############
-function getBigDOMElements(){
-    let elems = {
-        bio: document.querySelector("#dynamic-menu a:first-child"),
-        links: document.querySelector("#dynamic-menu a:nth-child(2)"),
-        settings: document.querySelector("#dynamic-menu a:last-child"),
-    };
-    return elems;
+    get source(){
+        return this._source;
+    }
+    set source(element){
+        this._source = element;
+    }
+    set fill(element){
+        this._fill = element;
+    }
+    get fill(){
+        return this._fill;
+    }
 }
 
-// generating HTML and CONTENT in MENU for bigger screen
-function createBigBio(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
+class Menu extends DynamicUI{
+    constructor(source, fill, active){
+        super(source, fill);
+        this._active = active;
+        this._menuTab = document.querySelector(`#${this._source.id.split('-')[1]}`);
+    }
+    get active(){
+        return this._active;
+    }
+    set active(bool){
+        this._active = bool;
+    }
+    get menuTab(){
+        return this._menuTab;
+    }
+    activate(){
+        this.active = true;
+        this._menuTab.classList.add("active");
+        this.addSourceToHtml();
+    }
+    deactivate(){
+        if(this._active){
+            this.active = false;
+            this._menuTab.classList.remove("active");
+            this.removeHtml();
+        }
+    }
 
-    const source = document.getElementById("bigBio").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
-    
-};
-
-function createBigLinks(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
-    
-    const source = document.getElementById("bigLinks").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
-
-};
-
-function createBigSettings(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
-    
-    const source = document.getElementById("bigSettings").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
 }
 
-// EVENT HANDLER FOR LINKS (BIG SCREEN)
-function createBigLinksEventHandlers(){
-    let addIcon = document.querySelector(".circle");
-    let selectBar = document.querySelector(".dropdown")
-    let options = document.querySelectorAll(".dropdown option");
-    let divButton = document.querySelector("#form-button");
-    addIcon.addEventListener("click", (e) => {
-        if(divButton.classList[0] === "hidden") divButton.classList.remove("hidden");
-        let idx = selectBar.options.selectedIndex
-        let selectedOption = options[idx];
-        let element = createInputForSelOption(selectedOption);
-        addRemoveIcon(element);
-    });
+class Version extends DynamicUI{
+    constructor(source, fill, type, selector){
+        super(source, fill);
+        this._currentTab = undefined;
+        this.addSourceToHtml();
+        this._type = type;
+        this.setUp(selector);
+    }
+    get type(){
+        return this._type;
+    }
+    get currentTab(){
+        return this._currentTab;
+    }
+    set currentTab(tab){
+        if(this._currentTab){
+            this._currentTab.deactivate();
+        }
+        this._currentTab = tab;
+        this._currentTab.activate();
+    }
+    setUp(selector){
+        this._fill.querySelectorAll("a").forEach(element => {
+            let source = document.querySelector(`#${this.type}-${element.id}`);
+            let fill = document.querySelector('#parent');
+            let newMenu = new Menu(source,fill, false);
+            this.addChild(newMenu);
+            if(document.getElementById(element.id) === document.querySelector(selector)){
+                this.currentTab = newMenu;
+            }
+        });
+    }
 }
 
-function createInputForSelOption(option){
-    let parent = document.querySelector("#anchor");
-    if(!document.querySelector(`input[name=${option.value}]`)){
+// DESKTOP
+const handlers = (function(){
+    // ############## DOM STRINGS ##############
+    const DOM = {
+        imagebig : "#big-Image img",
+        imagesmall: "#small-Image img",
+        filePickerbig : "#bigImgInput",
+        filePickersmall : "#smallImgInput",
+        btnSubmitSmlPic: ".icon-container button"
+    }
+    // ############## LINKS HANDLER ##############
+    const createFieldHTML = function(option){
+        let parent = document.querySelector("#anchor");
+        const html = `<div id="${option.value}" class="field">
+                    <label>${option.text}</label>
+                    <input name="${option.value}" type="text" placeholder="URL">
+                </div>`
+        parent.insertAdjacentHTML('beforeend', html);
+    }
+    const gatherElements = function(element){
+        let addIcon = element.fill.querySelector(".circle");
+        let selectBar = element.fill.querySelector(".dropdown")
+        let options = element.fill.querySelectorAll(".dropdown option");
+        let divButton = element.fill.querySelector("#form-button");
+        return [addIcon, selectBar, options, divButton];
+    }
+    const checkIfUninque = function(option){
+        let parent = document.querySelector("#anchor");
+        if(parent.children.length){
+            for (let child of parent.children){
+                if(child.id === option.value){
+                    return false
+                }
+            }
+        }
+        return true;
+    }
+    const createIcon = function(element){
         let div = document.createElement("div");
-        div.classList.add("field");
-        div.setAttribute("id", `${option.value}`);
-        let label = document.createElement("label");
-        let text = document.createTextNode(option.text);
-        label.appendChild(text);
-        let input = document.createElement("input");
-        input.setAttribute("name", `${option.value}`);
-        input.setAttribute("type", "text");
-        input.setAttribute("placeholder", "URL");
-        div.appendChild(label);
-        div.appendChild(input);
-        parent.appendChild(div);
-        return div;
+        div.classList.add("div-removeIcon");
+        let icon = document.createElement("i");
+        icon.classList.add("trash","alternate","icon","rd");
+        icon.addEventListener("click", () => {
+            document.querySelector("#anchor").removeChild(element);
+        });
+        div.appendChild(icon);
+        element.appendChild(div);
     }
-}
+    const handleNewLink = function(element){
+        const [addIcon, selectBar, options, divButton] = gatherElements(element);
+        addIcon.addEventListener("click", (e) => {
+            if(divButton.classList[0] === "hidden") divButton.classList.remove("hidden");
+            let idx = selectBar.options.selectedIndex
+            let selectedOption = options[idx];
+            if(checkIfUninque(selectedOption)){
+                createFieldHTML(selectedOption);
+                createIcon(document.querySelector(`#${selectedOption.value}`));
+            }
+        });
+    }
+    const linksHandler = function(element){
+        element.menuTab.addEventListener("click", () => {
+            setTimeout(handleNewLink.bind(null, element), 0)
+        })
+    }
+    // ############################
 
-function addRemoveIcon(element){
-    let div = document.createElement("div");
-    div.style.display = "inline";
-    div.style.position = "absolute";
-    div.style.left = "53vw";
-    div.style.marginTop = "1vh";
-    let icon = document.createElement("i");
-    icon.classList.add("trash");
-    icon.classList.add("alternate");
-    icon.classList.add("icon");
-    icon.classList.add("bad");
-    icon.addEventListener("click", () => {
-        document.querySelector("#anchor").removeChild(element);
-    });
-    div.appendChild(icon);
-    element.appendChild(div);
-}
-
-// ############### SMALL ELEMENTS ###############
-function getSmallDOMElements(){
-    let elems = {
-        picture: document.querySelector("#dynamic-menu a:first-child"),
-        bio: document.querySelector("#dynamic-menu a:nth-child(2)"),
-        links: document.querySelector("#dynamic-menu a:nth-child(3)"),
-        settings: document.querySelector("#dynamic-menu a:last-child"),
-    };
-    return elems;
-}
-// generating HTML and CONTENT for smaller screen
-function createSmallPicture(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
-
-    const source = document.getElementById("smallPicture").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
-}
-
-function createSmallBio(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
-
-    const source = document.getElementById("smallBio").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
-}
-
-function createSmallLinks(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
-
-    const source = document.getElementById("smallLinks").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
-}
-
-function createSmallSettings(){
-    let parent = document.querySelector("#parent");
-    removeChildren(parent);
-
-    const source = document.getElementById("smallSettings").innerHTML;
-
-    const template = Handlebars.compile(source);
-
-    const compiledHtml = template();
-
-    parent.innerHTML = compiledHtml;
-}
-
-function createMyPictureEventHandlers(){
-    let inputElement = document.querySelector(".inputfile");
-    let img = document.querySelector(".picture-container img");
-    let reader = new FileReader();
-    inputElement.addEventListener("change", (e) => {
-        let file = inputElement.files[0];
-        reader.onload = function() {
-            img.src = reader.result;
+    // ############## PICTURE HANDLER ##############
+    const pictureHandler = function(size){
+        let inputElement = document.querySelector(DOM["filePicker"+size]);
+        let img = document.querySelector(DOM["image"+size]);
+        let btn = document.querySelector(DOM.btnSubmitSmlPic);
+        console.log(img);
+        let reader = new FileReader();
+        inputElement.addEventListener("change", (e) => {
+            let file = inputElement.files[0];
+            reader.onload = function() {
+                img.src = reader.result;
+                if(size === "small") btn.classList.remove("hidden");
+            }
+            reader.readAsDataURL(file);
+        }, false);   
+    }
+    // ############################
+    return {
+        mainHandler: function(version, size){
+            version.children.forEach(child => {
+                if(child.menuTab.id === "Links"){
+                    linksHandler(child);
+                }
+                child.menuTab.addEventListener("click", function(e){
+                    let foundChild = version.children.find(child => {
+                        return e.target.id === child.menuTab.id;
+                    });
+                    version.currentTab = foundChild;
+                });
+            });
+            pictureHandler(size);
         }
-        reader.readAsDataURL(file);
-    }, false);   
+    }
+})();
+
+function init(settings, handlers){
+    let source, fill, version, size;
+    if(window.innerWidth > settings.widthThreshold){
+        document.querySelector("#big-Image").style.display = "flex";
+        source = document.querySelector("#big-Menu");
+        fill = document.querySelector("#dynamic-menu");
+        size = "big";
+    }else{
+        source = document.querySelector("#small-Menu");
+        fill = document.querySelector("#dynamic-menu");
+        size = "small";
+        settings.defaultTabSelector = "#Picture";
+    }
+    version = new Version(source, fill, size, settings.defaultTabSelector);
+    handlers.mainHandler(version, size);
 }
 
-function createSmallLinksEventHandlers(){
-    let addIcon = document.querySelector(".circle");
-    let selectBar = document.querySelector(".dropdown")
-    let options = document.querySelectorAll(".dropdown option");
-    let divButton = document.querySelector("#form-button");
-    addIcon.addEventListener("click", (e) => {
-        if(divButton.classList[0] === "hidden") divButton.classList.remove("hidden");
-        let idx = selectBar.options.selectedIndex
-        let selectedOption = options[idx];
-        let element = createInputForSelOption(selectedOption);
-        addSmallRemoveIcon(element);
-    });
-}
-
-function addSmallRemoveIcon(element){
-    let div = document.createElement("div");
-    div.style.display = "inline";
-    div.style.position = "absolute";
-    div.style.left = "67.5vw";
-    div.style.marginTop = "1vh";
-    let icon = document.createElement("i");
-    icon.classList.add("trash");
-    icon.classList.add("alternate");
-    icon.classList.add("icon");
-    icon.classList.add("bad");
-    icon.addEventListener("click", () => {
-        document.querySelector("#anchor").removeChild(element);
-    });
-    div.appendChild(icon);
-    element.appendChild(div);
-}
-
-
-
-
-
+init(initialSettings, handlers);
