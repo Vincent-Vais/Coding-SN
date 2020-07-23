@@ -7,31 +7,34 @@
 	<title></title>
 </head>
 <body>
-	<div class="ui fixed inverted menu">
-		<div class="ui container">
-			<div id="menu" class="ui secondary menu">
-					<div class="header item">
-						<a href="/"><i class="code icon"></i></a>
-					</div>
-					<a href="/" class="active item">Blog</a>
-					<% if(user){ %>
-						<a href="/mypage/<%= user._id %>" class="item"><%= user.username %></a>
-					<a href="/blogs/new" class="item">New Post</a>
-					<% } %>
-				<div class="right menu ">
-					  <% if(user){ %>
-					  <div class="item">
-						<a href="/logout" class="ui negative button">Log-out</a>
-					  </div>
-					  <% }else{ %>
-						<div class="item">
-							<a href="/login" class="ui violet button">Log-in</a>
-						  </div>
-						<div class="item">
-							<a href="/register" class="ui primary button">Sign up</a>
-						</div>
-					  <% } %>
+	<div id="menu" class="ui inverted segment">
+		<div class="ui inverted secondary pointing menu">
+			<div class="left-menu">
+				<div class="header item">
+					<a href="/"><i class="code icon"></i></a>
 				</div>
+				<div class="left-menu-item">
+					<a href="/" class="active item">Blogs</a>
+					<a href="/" class="item">User</a>
+				</div>
+				<% if(user){ %>
+					<a href="/mypage/<%= user._id %>" class="item"><%= user.username %></a>
+				<a href="/blogs/new" class="item">New Post</a>
+				<% } %>
+			</div>
+			<div class="right menu ">
+					<% if(user){ %>
+					<div class="item">
+					<a href="/logout" class="ui negative button">Log-out</a>
+					</div>
+					<% }else{ %>
+					<div class="item">
+						<a href="/login" class="ui violet button">Log-in</a>
+						</div>
+					<div class="item">
+						<a href="/register" class="ui primary button">Sign up</a>
+					</div>
+					<% } %>
 			</div>
 		</div>
 	</div>
