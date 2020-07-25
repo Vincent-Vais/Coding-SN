@@ -97,30 +97,34 @@
 		Create a blog -->
 	</div>
 	<div class="my-content">
-		<div class="box">
+		<div class="content-item">
 			<% blogs.forEach(function(blog){ %>
-			<div class = "image-container">
-				<div class="image">
-					<img src="<%= blog.image %>">
-				</div>
-				<div class="content-container">
-					<div class="title">
-						<a href="/blogs/<%= blog._id %>"><%= blog.title %></a>
+			<div class="box">
+					<div class = "image-container">
+						<div class="image">
+							<img src="<%= blog.image %>">
+						</div>
 					</div>
-					<div class="meta">
-						<span><%= blog.created.toDateString() %></span>
+					<div class="aside-container">
 					</div>
-					<div class="description">
-						<p>
-						<%- blog.body.substring(0, 100) %>...
-						</p>
-					</div>
-					<div class="author">
-						<%= blog.author %>
-					</div>
-				</div>
 			</div>
-			<div class="aside-container">
+			<div class="content-container">
+				<div class="title">
+					<a href="/blogs/<%= blog._id %>"><%= blog.title %></a>
+				</div>
+				<div class="meta">
+					<span><%= blog.created.toDateString() %></span>
+				</div>
+				<div class="description">
+					<p>
+					<%- blog.body.substring(0, 100) %>...
+					</p>
+				</div>
+				<div class="author">
+					<%= blog.author %>
+				</div>
+			</div>	
+			<div class="arrow">
 				<a href="/blogs/<%= blog._id %>">
 					<i class="right chevron icon"></i>
 				</a>
