@@ -143,6 +143,9 @@ ul {
 	width: inherit;
 	background-color: rgba(190, 190, 190, 0.5);
 }
+.inline-form{
+	display: inline-block;
+}
 
 /* Icons */
 i.grn{
@@ -156,6 +159,12 @@ i.rd{
 }
 i.rd:hover{
 	color: rgba(219, 40, 40, 1.0);
+}
+i.go{
+	color: #fff!important;
+}
+i.go:hover{
+	color: rgb(235, 76, 145)!important;
 }
 
 /* Buttons */
@@ -199,6 +208,18 @@ i.rd:hover{
 #menu .header.item{
 	font-size: 2rem;
 	padding: 1vh 2vw 1vh 0;
+}
+
+#menu .username{
+	height: 100%;
+	padding: 0;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+
+#menu .username a{
+	font-size: 1.25rem;
 }
 
 .left-menu-item{
@@ -453,7 +474,6 @@ form .btn-check{
 	background: radial-gradient(circle, rgba(238,174,202,0.95) 0%, rgba(148,187,233,0.95) 100%);
 }
 
-
 .content-container{
 	position: absolute;
 	top: 0;
@@ -504,5 +524,107 @@ form .btn-check{
 
 .arrow i{
 	font-size: 3.5rem!important;
-	color: #fff!important;
+}
+
+
+/*----------------------------------------------------------------------------------------------*/
+
+/*                    show.ejs               */
+
+/*----------------------------------------------------------------------------------------------*/
+#show-blog {
+	margin-top: -12.5vh;
+}
+
+#show-blog .title{
+	text-align: center;
+	letter-spacing: 2.5px;
+	margin-bottom: 0!important;
+}
+
+#show-blog.segment{
+	border: none!important;
+	box-shadow: none!important;
+	-webkit-box-shadow: none!important;
+}
+
+#show-blog .aside{
+	text-align: right;
+	font-size: 0.9rem;
+}
+
+#show-blog p{
+	line-height: 1.7rem;
+	word-spacing: 2px;
+}
+
+#show-blog div.attached{
+	margin-bottom: 2.5vh;
+}
+
+#show-blog button.wide{
+	width: 7rem!important;
+}
+
+.show-author{
+	position: sticky;
+	top: 23.15vh;
+	left: 10vh;
+	width: 200px;
+}
+.show-author--img {
+	display: flex;
+	justify-content: center;
+}
+.show-author--img img{
+	border-radius: 50%;
+}
+.show-author--name{
+	text-align: center;
+}
+.show-author--interact{
+	display: flex;
+	justify-content: center;
+	font-size: 1.5rem;
+}
+
+.show-author--interact i:hover{
+	color: rgb(235, 76, 145)!important;
+}
+
+.show-comment{
+	display: flex;
+	width: 100%;
+}
+
+.show-comment p{
+	display: inline-block;
+	width: 95%;
+}
+
+.show-comment--interact{
+	width: 5%;
+	display: flex;
+	flex-wrap: wrap;
+	justify-content: space-evenly;
+}
+
+.show-comment--interact i{
+	font-size: 1.25rem!important;
+}
+
+.show-comment--buttons i{
+	font-size: 1.25rem!important;
+}
+
+i.like-comment:hover{
+	color: blue;
+}
+
+i.comment-edit:hover{
+	color: green;
+}
+
+i.comment-delete:hover{
+	color: red;
 }

@@ -116,7 +116,10 @@ app.get("/blogs", function(req, res){
 					if(err){
 						console.log(err);
 					}else{
-						blog.author = foundUser[0].username;
+						blog.authorUsername = foundUser[0].username;
+						blog.authorFirstName = foundUser[0].firstName;
+						blog.authorLastName = foundUser[0].lastName;
+						blog.authorImage = foundUser[0].img;
 						blog.save();
 					}
 				});

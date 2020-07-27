@@ -15,17 +15,18 @@
 				</div>
 				<div class="left-menu-item">
 					<a href="/" class="active item">Blogs</a>
-					<a href="/" class="item">User</a>
+					<% if(user){ %>
+						<a href="/blogs/new" class="item">New Post</a>
+					<% } %>
 				</div>
-				<% if(user){ %>
-					<a href="/mypage/<%= user._id %>" class="item"><%= user.username %></a>
-				<a href="/blogs/new" class="item">New Post</a>
-				<% } %>
 			</div>
 			<div class="right menu ">
 					<% if(user){ %>
+					<div class="item username">
+						<a href="/mypage/<%= user._id %>"><%= user.username %></a>
+					</div>
 					<div class="item">
-					<a href="/logout" class="ui negative button">Log-out</a>
+						<a href="/logout" class="ui negative button">Log-out</a>
 					</div>
 					<% }else{ %>
 					<div class="item">

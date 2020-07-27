@@ -34,9 +34,9 @@ for (let item of box){
 
 function outHandler(e){
   let elementMouseIsOver = document.elementFromPoint(event.clientX, event.clientY);
-  console.log(elementMouseIsOver);
+  // console.log(elementMouseIsOver);
   let inside = box.findIndex(item => item === elementMouseIsOver);
-  console.log(inside);
+  // console.log(inside);
   if(inside === -1){
     $(".content-container").css("display","none");
     $( ".box .aside-container" ).animate({
