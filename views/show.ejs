@@ -7,14 +7,20 @@
 	<div class="show-author--name">
 		<h2><%=blog.authorFirstName%> <%=blog.authorLastName%></h2>
 	</div>
-	<div class="show-author--interact">
-		<i class="address book outline icon"></i>
-		<i class="bullhorn icon"></i>
-		<i class="folder open outline icon"></i>
-	</div>
+</div>
+<div id="show-vertical-menu" class="ui icon menu vertical-menu">
+	<a class="item" data-post-to="like">
+		<i class="heart outline icon"></i>
+	</a>
+	<a class="item" data-post-to="comment">
+		<i class="comment outline icon"></i>
+	</a>
+	<a class="item" data-post-to="favorite">
+		<i class="star outline icon"></i>
+	</a>
 </div>
 <div id="show-blog" class="ui main text container segment">
-	<div class="ui top attached">
+	<div class="ui top attached show-content">
 		<img class="ui centered rounded image" src="<%= blog.image %>">
 		<div class="ui huge header title">
 			<%= blog.title %>
@@ -33,18 +39,20 @@
 			</div>
 		</div>
 	</div>
-	<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST" id="update">
-		<button class="ui orange inverted button long wide">
+	<!-- <form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST"> -->
+	<form class="inline-form" action="/blogs/<%= blog._id%>/edit" method="GET">
+		<button type="submit" class="ui orange inverted button long wide">
 			EDIT
 		</button>
 	</form>
-	<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" id="delete">
-		<button class="ui red inverted button wide">
+	<!-- <form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST"> -->
+	<form class="inline-form" action="/blogs/<%= blog._id%>/delete" method="GET">
+		<button type="submit" class="ui red inverted button wide">
 			DELETE
 		</button>
 	</form>
 </div>
-<div class="ui container segment">
+<div id="comments" class="ui container segment comments-segment">
 	<div class="ui segments">
 		<div class="ui segment">
 			<div class="show-comment">
@@ -56,21 +64,88 @@
 				</div>
 			</div>
 			<div class="show-comment--buttons">
-				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST" id="update">
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
 					<button type="submit"><i class="edit outline icon comment-edit"></i></button>
 				</form>
-				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST" id="delete">
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
 					<button type="submit"><i class="times icon comment-delete"></i></button>
 				</form>
 			</div>
 		</div>
 		<div class="ui segment">
-		  <p>Nested Middle</p>
+			<div class="show-comment">
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non placeat quidem ipsum qui ducimus facilis quisquam obcaecati provident nostrum voluptates.
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit ad quisquam unde, provident eveniet voluptate, id recusandae quia aspernatur quod soluta dolore fugiat, fuga eius fugit atque explicabo aut. Ducimus exercitationem atque odit eius at, amet aut! Eligendi, atque tempore?
+				</p>
+				<div class="show-comment--interact">
+				  <i class="thumbs up outline icon like-comment"></i>
+				</div>
+			</div>
+			<div class="show-comment--buttons">
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
+					<button type="submit"><i class="edit outline icon comment-edit"></i></button>
+				</form>
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+					<button type="submit"><i class="times icon comment-delete"></i></button>
+				</form>
+			</div>
 		</div>
 		<div class="ui segment">
-		  <p>Nested Bottom</p>
+			<div class="show-comment">
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non placeat quidem ipsum qui ducimus facilis quisquam obcaecati provident nostrum voluptates.
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit ad quisquam unde, provident eveniet voluptate, id recusandae quia aspernatur quod soluta dolore fugiat, fuga eius fugit atque explicabo aut. Ducimus exercitationem atque odit eius at, amet aut! Eligendi, atque tempore?
+				</p>
+				<div class="show-comment--interact">
+				  <i class="thumbs up outline icon like-comment"></i>
+				</div>
+			</div>
+			<div class="show-comment--buttons">
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
+					<button type="submit"><i class="edit outline icon comment-edit"></i></button>
+				</form>
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+					<button type="submit"><i class="times icon comment-delete"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="ui segment">
+			<div class="show-comment">
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non placeat quidem ipsum qui ducimus facilis quisquam obcaecati provident nostrum voluptates.
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit ad quisquam unde, provident eveniet voluptate, id recusandae quia aspernatur quod soluta dolore fugiat, fuga eius fugit atque explicabo aut. Ducimus exercitationem atque odit eius at, amet aut! Eligendi, atque tempore?
+				</p>
+				<div class="show-comment--interact">
+				  <i class="thumbs up outline icon like-comment"></i>
+				</div>
+			</div>
+			<div class="show-comment--buttons">
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
+					<button type="submit"><i class="edit outline icon comment-edit"></i></button>
+				</form>
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+					<button type="submit"><i class="times icon comment-delete"></i></button>
+				</form>
+			</div>
+		</div>
+		<div class="ui segment">
+			<div class="show-comment">
+				<p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Non placeat quidem ipsum qui ducimus facilis quisquam obcaecati provident nostrum voluptates.
+					Lorem ipsum dolor sit amet consectetur adipisicing elit. Reprehenderit ad quisquam unde, provident eveniet voluptate, id recusandae quia aspernatur quod soluta dolore fugiat, fuga eius fugit atque explicabo aut. Ducimus exercitationem atque odit eius at, amet aut! Eligendi, atque tempore?
+				</p>
+				<div class="show-comment--interact">
+				  <i class="thumbs up outline icon like-comment"></i>
+				</div>
+			</div>
+			<div class="show-comment--buttons">
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=PUT" method="POST">
+					<button type="submit"><i class="edit outline icon comment-edit"></i></button>
+				</form>
+				<form class="inline-form" action="/blogs/<%= blog._id %>?_method=DELETE" method="POST">
+					<button type="submit"><i class="times icon comment-delete"></i></button>
+				</form>
+			</div>
 		</div>
 	  </div>
 </div>
+<script src="/js/showBlog.js"></script>
 
 <%- include("partials/footer") %>

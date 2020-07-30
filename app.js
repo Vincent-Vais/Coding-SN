@@ -7,7 +7,8 @@ const express = require("express"),
 	  passport       = require("passport"),
 	  LocalStrategy  = require("passport-local"),
 	  User = require("./models/user"),
-	  Blog = require("./models/blog");
+	  Blog = require("./models/blog"),
+	  Comment = require("./models/comment");
 
 var fs = require('fs'); 
 var path = require('path'); 
@@ -63,6 +64,17 @@ const isLoggedIn = (req, res, next) => {
 	if(req.session.passport && req.user.username === req.session.passport.user){
 		next();
 	}else{res.redirect("/login");}	
+}
+
+const ownsPost = (req, res, next) => {
+	User.findById(req.user._id, function(err, foundUser){
+		if(err){
+			console.log("Error! ", err);
+		}else{
+			res.locals.owns = foundUser.myBlogs.includes(req.params.id);
+			next()
+		}
+	});
 }
 
 app.use(passport.initialize());
@@ -176,28 +188,94 @@ app.get("/blogs/:id/edit", isLoggedIn, function(req, res){
 	
 })
 
-app.put("/blogs/:id", isLoggedIn, function(req, res){
+app.put("/blogs/:id", isLoggedIn, ownsPost, function(req, res){
 	req.body.blog.body = req.sanitize(req.body.blog.body);
-	Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
-		if(err){
-			console.log("Error! ", err);
-			res.redirect("/blogs");
-		}else{
-			res.redirect(`/blogs/${req.params.id}`);
-		}
-	});
+	if(res.locals.owns){
+		Blog.findByIdAndUpdate(req.params.id, req.body.blog, function(err, updatedBlog){
+			if(err){
+				console.log("Error! ", err);
+				res.redirect("/blogs");
+			}else{
+				res.redirect(`/blogs/${req.params.id}`);
+			}
+		});
+	}
 });
 
-app.delete("/blogs/:id", isLoggedIn, function(req, res){
-	Blog.findByIdAndRemove(req.params.id, function(err){
-		if(err){
-			console.log("Error! ", err);
-			res.redirect("/blogs");
-		}else{
-			res.redirect("/blogs");
-		}	
-	});
+app.delete("/blogs/:id", isLoggedIn, ownsPost, function(req, res){
+	if(res.locals.owns){
+		Blog.findByIdAndRemove(req.params.id, function(err){
+			if(err){
+				console.log("Error! ", err);
+				res.redirect("/blogs");
+			}else{
+				res.redirect("/blogs");
+			}	
+		});
+	}
 });
+
+app.post("/blogs/:id/:type", isLoggedIn, (req, res) => {
+	const data = req.body;
+	switch(data.type){
+		case "like":
+			Blog.findById(req.params.id, (err, foundBlog) => {
+				if(err){
+					console.log("Error! ", err);
+				}else{
+					foundBlog.numLikes = foundBlog.numLikes ? foundBlog.numLikes + 1 : 1;
+					foundBlog.save();
+				}
+			});
+			break;
+		case "comment":
+			Blog.findById(req.params.id, (err, foundBlog) => {
+				if(err){
+					console.log(err);
+				}else{
+					User.findById(req.user._id, (err, foundUser) => {
+						if(err){
+							console.log("Error! ", err);
+						}else{
+							Comment.create(
+								{
+									author: foundUser,
+									body: data.data,
+									underBlog: foundBlog
+								}, (err, createdComment) => {
+									if(err){
+										console.log(err);
+									}else{
+										console.log(createdComment);
+									}
+								})
+						}
+					});
+				}
+			})
+			break;
+		case "favorite":
+			Blog.findById(req.params.id, (err, foundBlog) => {
+				if(err){
+					console.log("Error! ", err);
+				}else{
+					User.findById(req.user._id, (err, foundUser) => {
+						if(err){
+							console.log("Error! ", err);
+						}else{
+							foundUser.favoriteBlogs.push(foundBlog);
+							foundUser.save();
+						}
+					});
+				}
+			});
+			break;
+		default:
+			console.log("UNKNOWN TYPE");
+			break;
+	}
+	res.send("OK");
+})
 
 // ######################## USER PAGE #########################
 app.get("/mypage/:id", isLoggedIn, (req, res) => {

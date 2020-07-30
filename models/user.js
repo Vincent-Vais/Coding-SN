@@ -15,6 +15,10 @@ userSchema = new mongoose.Schema({
     myBlogs: [{
 			type: mongoose.Schema.Types.ObjectId,
 			ref: "Blog"
+    }],
+    favoriteBlogs: [{
+        type: mongoose.Schema.Types.ObjectId,
+		ref: "Blog"
     }]
 }); 
 

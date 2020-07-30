@@ -532,8 +532,11 @@ form .btn-check{
 /*                    show.ejs               */
 
 /*----------------------------------------------------------------------------------------------*/
+
+/* Blog */
 #show-blog {
-	margin-top: -12.5vh;
+	/* position: relative; */
+	margin-top: -20vh;
 }
 
 #show-blog .title{
@@ -566,6 +569,7 @@ form .btn-check{
 	width: 7rem!important;
 }
 
+/* Author */
 .show-author{
 	position: sticky;
 	top: 23.15vh;
@@ -590,6 +594,11 @@ form .btn-check{
 
 .show-author--interact i:hover{
 	color: rgb(235, 76, 145)!important;
+}
+
+/* Comments */
+.comments-segment{
+	width: 50%!important;
 }
 
 .show-comment{
@@ -628,3 +637,48 @@ i.comment-edit:hover{
 i.comment-delete:hover{
 	color: red;
 }
+
+.comment-default{
+	border: inherit;
+	width: 100%;
+	height: 100%;
+	padding: 10px;
+}
+
+.comment-default:focus{
+	outline-color: rgba(34,36,38,.15);
+}
+
+#comments button{
+	position: relative;
+	bottom: 6vh;
+	left: 42.5vw;
+}
+#comments button:focus{
+	outline: none;
+}
+#comments .icon.grn{
+	font-size: 2rem!important;
+}
+
+/* Vertical Menu */
+.vertical-menu{
+	position: fixed;
+	top: 20vh;
+	left: 93.25vw;
+	display: flex;
+	width: 100px;
+	height: 300px;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+}
+
+.vertical-menu i{
+	font-size: 3.5rem;
+}
+
+.vertical-menu a:hover{
+	color: rgba(148,187,233,1)!important;
+}
+
